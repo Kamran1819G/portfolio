@@ -1,0 +1,165 @@
+.dev-icons {
+  padding-left: 0;
+  list-style: none;
+  font-size: 3rem;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  text-align: center;
+}
+
+.competitive-sites-inline {
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.competitive-sites-inline > i {
+  color: #868e96;
+}
+
+.competitive-sites-inline > i:hover {
+  color: #645beb;
+}
+.degree-card {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-title {
+  font-family: "Montserrat";
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.card-subtitle {
+  font-family: "Montserrat";
+  font-size: 18px;
+  font-weight: 700;
+  /* color: #000000; */
+  padding: 8px 0px 0px;
+}
+
+.card-img {
+  width: 200px;
+  height: auto;
+  border-radius: 50%;
+  padding: 10px;
+  border: 1px solid #d9dbdf;
+  /* background-color: #6c63ff; */
+  /* background: transparent; */
+  box-shadow: 5px 5px 5px #d9dbdf;
+}
+
+.body-header {
+  max-width: inherit;
+  display: flex;
+  /* width: 100%; */
+  /* background-color:#6c63ff99; */
+  border-radius: 7px 7px 0px 0px;
+  padding: 10px;
+}
+
+.body-header-title {
+  align-items: flex-start;
+  width: 80%;
+}
+
+.body-header-duration {
+  width: 20%;
+}
+.duration {
+  font-family: "Montserrat";
+  font-size: 16px;
+  font-weight: 700;
+  padding-right: 10px;
+  float: right;
+}
+
+.body-content {
+  max-width: inherit;
+  /* width: 100%; */
+  border-radius: 0px 0px 7px 7px;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+  /* box-shadow: 5px 5px 5px #d3d3d3; */
+}
+
+.content-list {
+  color: #868e96;
+  font-size: 19px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: "Montserrat";
+}
+
+.card-body {
+  /* background-color: #00FF00; */
+  border-bottom: 1px solid #d9dbdf;
+  border-left: 1px solid #d9dbdf;
+  border-right: 1px solid #d9dbdf;
+  border-radius: 7px;
+  width: 90%;
+  margin: 10px;
+  box-shadow: 5px 5px 5px #d9dbdf;
+}
+@media (max-width: 768px) {
+  .degree-card {
+    flex-direction: column;
+  }
+}
+
+.cert-card {
+  width: 33%;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #d9dbdf;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #d9dbdf;
+  margin-bottom: 30px;
+  flex: 0 0 30%;
+}
+
+.cert-header {
+  margin: 0px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.cert_img {
+  margin: 3px;
+  width: auto;
+  height: 100px;
+}
+
+.cert-body {
+  margin: 0px;
+}
+
+.cert-body-title {
+  color: rgb(0, 28, 85);
+  font-size: 20px;
+  margin: 10px;
+}
+
+.cert-body-subtitle {
+  font-size: 18px;
+  color: #808080;
+  margin: 10px;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .cert-card {
+    width: 100%;
+  }
+}

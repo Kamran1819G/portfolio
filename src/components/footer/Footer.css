@@ -1,0 +1,21 @@
+.fot_social .social-icon {
+  border: 2px solid #868e96;
+  border-radius: 50%;
+  transition: all 0.5s;
+  width: 42px;
+  height: 42px;
+  display: block;
+  font-size: 18px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.fot_social .social-icon:hover {
+  border-color: #000;
+  color: #000 !important;
+  transform: rotate(360deg);
+}
+
+.copy-rights {
+  line-height: 43px;
+}
