@@ -27,3 +27,8 @@
   height: 10px;
   border-radius: 10px;
 }
+@media (max-width: 768px) {
+  .skillBox {
+    width: 100%;
+  }
+}
