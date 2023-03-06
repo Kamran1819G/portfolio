@@ -1,80 +1,102 @@
 import React from "react";
 import ExperienceCard from "../components/experience/ExperienceCard";
 import "../css/Experience.css";
-import ManWorking from "../assets/images/man-working.gif";
+import uable from "../assets/experience/uable.png";
+import internshala from "../assets/experience/internshala.png";
+import rendezvous from "../assets/experience/rendezvous.png";
+import codechefBVPDET from "../assets/experience/codechef-bvpdetnm.jpg";
+import gfgbvpdet from "../assets/experience/gfgbvpdet-nm.jpg";
+import gdscbvpdet from "../assets/experience/gdsc-bvpdetnm.jpg";
 
 function Experience() {
   return (
     <>
       <section className="section">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-12 d-flex justify-content-space-between">
-              <div className="section-img">
-                <img src={ManWorking} alt="Man Working" />
-              </div>
-              <div className="section-text text-center">
-                <h1 className="section-title">Experience</h1>
-                <h3 className="section-subtitle">
-                  Work, Internship and Volunteership
-                </h3>
-                <p className="section-description">
-                  I have worked with many evolving startups as ML Developer,
-                  Designer and Software Architect. I have also worked with some
-                  well established companies mostly as AI Developer. I love
-                  organising events and that is why I am also involved with many
-                  opensource communities as a representative.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="section">
-        <div className="container">
           <h1 className="section-title mb-5">Experiences</h1>
-          <div className="row">
-            <div className="col-lg-12 d-flex justify-content-evenly">
-              <ExperienceCard
-                bgColor="rgb(20, 124, 244)"
-                companyName="Google"
-                img="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4Igp3aWR0aD0iOTYiIGhlaWdodD0iOTYiCnZpZXdCb3g9IjAgMCA0OCA0OCIKc3R5bGU9IiBmaWxsOiMwMDAwMDA7Ij48cGF0aCBmaWxsPSIjZmJjMDJkIiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMS42NDksNC42NTctNi4wOCw4LTExLjMwMyw4Yy02LjYyNywwLTEyLTUuMzczLTEyLTEyCXM1LjM3My0xMiwxMi0xMmMzLjA1OSwwLDUuODQyLDEuMTU0LDcuOTYxLDMuMDM5bDUuNjU3LTUuNjU3QzM0LjA0Niw2LjA1MywyOS4yNjgsNCwyNCw0QzEyLjk1NSw0LDQsMTIuOTU1LDQsMjRzOC45NTUsMjAsMjAsMjAJczIwLTguOTU1LDIwLTIwQzQ0LDIyLjY1OSw0My44NjIsMjEuMzUsNDMuNjExLDIwLjA4M3oiPjwvcGF0aD48cGF0aCBmaWxsPSIjZTUzOTM1IiBkPSJNNi4zMDYsMTQuNjkxbDYuNTcxLDQuODE5QzE0LjY1NSwxNS4xMDgsMTguOTYxLDEyLDI0LDEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzkJbDUuNjU3LTUuNjU3QzM0LjA0Niw2LjA1MywyOS4yNjgsNCwyNCw0QzE2LjMxOCw0LDkuNjU2LDguMzM3LDYuMzA2LDE0LjY5MXoiPjwvcGF0aD48cGF0aCBmaWxsPSIjNGNhZjUwIiBkPSJNMjQsNDRjNS4xNjYsMCw5Ljg2LTEuOTc3LDEzLjQwOS01LjE5MmwtNi4xOS01LjIzOEMyOS4yMTEsMzUuMDkxLDI2LjcxNSwzNiwyNCwzNgljLTUuMjAyLDAtOS42MTktMy4zMTctMTEuMjgzLTcuOTQ2bC02LjUyMiw1LjAyNUM5LjUwNSwzOS41NTYsMTYuMjI3LDQ0LDI0LDQ0eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxNTY1YzAiIGQ9Ik00My42MTEsMjAuMDgzTDQzLjU5NSwyMEw0MiwyMEgyNHY4aDExLjMwM2MtMC43OTIsMi4yMzctMi4yMzEsNC4xNjYtNC4wODcsNS41NzEJYzAuMDAxLTAuMDAxLDAuMDAyLTAuMDAxLDAuMDAzLTAuMDAybDYuMTksNS4yMzhDMzYuOTcxLDM5LjIwNSw0NCwzNCw0NCwyNEM0NCwyMi42NTksNDMuODYyLDIxLjM1LDQzLjYxMSwyMC4wODN6Ij48L3BhdGg+PC9zdmc+"
-                imgAlt="Google"
-                position="Software Engineer"
-                year="Someday in Future"
-                description="
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                point1="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                point2="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-              />
-              <ExperienceCard
-                bgColor="rgb(34, 34, 34)"
-                companyName="Microsoft"
-                img="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4Igp3aWR0aD0iOTYiIGhlaWdodD0iOTYiCnZpZXdCb3g9IjAgMCA0OCA0OCIKc3R5bGU9IiBmaWxsOiMwMDAwMDA7Ij48cGF0aCBmaWxsPSIjZmY1NzIyIiBkPSJNNiA2SDIyVjIySDZ6IiB0cmFuc2Zvcm09InJvdGF0ZSgtMTgwIDE0IDE0KSI+PC9wYXRoPjxwYXRoIGZpbGw9IiM0Y2FmNTAiIGQ9Ik0yNiA2SDQyVjIySDI2eiIgdHJhbnNmb3JtPSJyb3RhdGUoLTE4MCAzNCAxNCkiPjwvcGF0aD48cGF0aCBmaWxsPSIjZmZjMTA3IiBkPSJNMjYgMjZINDJWNDJIMjZ6IiB0cmFuc2Zvcm09InJvdGF0ZSgtMTgwIDM0IDM0KSI+PC9wYXRoPjxwYXRoIGZpbGw9IiMwM2E5ZjQiIGQ9Ik02IDI2SDIyVjQySDZ6IiB0cmFuc2Zvcm09InJvdGF0ZSgtMTgwIDE0IDM0KSI+PC9wYXRoPjwvc3ZnPg=="
-                imgAlt="Microsoft"
-                position="Software Engineer"
-                year="Someday in Future"
-                description="
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                point1="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                point2="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-              />
-              <ExperienceCard
-                bgColor="rgb(20, 124, 244)"
-                companyName="Facebook"
-                img="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4Igp3aWR0aD0iNDgiIGhlaWdodD0iNDgiCnZpZXdCb3g9IjAgMCA0OCA0OCIKc3R5bGU9IiBmaWxsOiMwMDAwMDA7Ij48cGF0aCBmaWxsPSIjMDM5YmU1IiBkPSJNMjQgNUExOSAxOSAwIDEgMCAyNCA0M0ExOSAxOSAwIDEgMCAyNCA1WiI+PC9wYXRoPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yNi41NzIsMjkuMDM2aDQuOTE3bDAuNzcyLTQuOTk1aC01LjY5di0yLjczYzAtMi4wNzUsMC42NzgtMy45MTUsMi42MTktMy45MTVoMy4xMTl2LTQuMzU5Yy0wLjU0OC0wLjA3NC0xLjcwNy0wLjIzNi0zLjg5Ny0wLjIzNmMtNC41NzMsMC03LjI1NCwyLjQxNS03LjI1NCw3LjkxN3YzLjMyM2gtNC43MDF2NC45OTVoNC43MDF2MTMuNzI5QzIyLjA4OSw0Mi45MDUsMjMuMDMyLDQzLDI0LDQzYzAuODc1LDAsMS43MjktMC4wOCwyLjU3Mi0wLjE5NFYyOS4wMzZ6Ij48L3BhdGg+PC9zdmc+"
-                imgAlt="FaceBook"
-                position="Software Engineer"
-                year="Someday in Future"
-                description="
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                point1="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                point2="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-              />
-            </div>
+          <div className="row row-cols-1 row-cols-md-3 g-4">
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="IIT Delhi"
+              img={rendezvous}
+              imgAlt="Rendezvous"
+              position="Campus Ambassador"
+              type="Internship"
+              year="Feb 2023 - Present"
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="Internshala"
+              img={internshala}
+              imgAlt="Internshala"
+              position="Student Partner"
+              type="Internship"
+              year="Dec 2022 - Present"
+              description=""
+              point1="• I received training and guidance from Internshala's marketing team, which helped me develop my skills in marketing, event management, and social media management."
+              point2="• Overall, my experience as an Internshala Student Partner provided me with valuable skills in marketing, event management, and social media management. I gained experience working collaboratively with a team and learned about the latest trends and techniques used in the industry."
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="CodeChef BVPDET-NM"
+              img={codechefBVPDET}
+              imgAlt="CodeChef BVPDET-NM"
+              position="DSA Mentor"
+              type="Full Time"
+              year="Sep 2022 - Present"
+              point1="• Led and organized various activities related to data structures and algorithms, such as guest lectures, coding competitions and study groups/workshops."
+              point2="• Provided resources and guidance to help members prepare for technical interviews and competitions."
+              point3="• Improved technical skills and knowledge of members in the area of data structures and algorithms."
+              point4="• Guided members on DSA problems and helped them to solve it."
+              point5="• Arranged practice sessions and mock tests for members."
+              point6="• Motivated members to participate in DSA-related competitions and events."
+              point7="• Created a community of DSA enthusiasts within the chapter."
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="GeeksforGeeks BVPDET-NM"
+              img={gfgbvpdet}
+              imgAlt="GeeksforGeeks BVPDET-NM"
+              position="Web Developer"
+              type="Full Time"
+              year="Oct 2022 - Present"
+              point1="• Created and maintained the chapter's website."
+              point2="• Ensured that the website was responsive and worked well on different devices and browsers."
+              point3="• Wrote clean, maintainable, and efficient code using best practices and coding conventions."
+              point4="• Optimized the performance of the website using techniques such as caching, minification, and compression."
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="GDSC BVPDET-NM"
+              img={gdscbvpdet}
+              imgAlt="GDSC BVPDET-NM"
+              position="Executive Member"
+              type="Full Time"
+              year="Oct 2022 - Present"
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="Uable"
+              img={uable}
+              imgAlt="Uable"
+              position="Uable Infulencer"
+              type="Internship"
+              year="Jan 2022 - Mar 2022"
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="Uable"
+              img={uable}
+              imgAlt="Uable"
+              position="Club Manager"
+              type="Internship"
+              year="Nov 2021 - jan 2022"
+              description=""
+              point1="• Meeting with teams to resolve problems, prioritize needs, define content criteria, or select solutions."
+              point2="• Directing or conducting out app updates."
+              point3="• Ensuring Users follow company policies and procedures."
+              point4="• Conducting and Hosting Events on app."
+            />
           </div>
         </div>
       </section>

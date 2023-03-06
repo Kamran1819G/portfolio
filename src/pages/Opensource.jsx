@@ -1,6 +1,6 @@
 import React from "react";
-import GDSC from "../assets/organizationslogo/GDSC.png";
-import Crowdsource from "../assets/organizationslogo/crowdsource.png";
+import GDSC from "../assets/organizations/GDSC.png";
+import Crowdsource from "../assets/organizations/crowdsource.png";
 import "../css/Opensource.css";
 
 function Opensource() {

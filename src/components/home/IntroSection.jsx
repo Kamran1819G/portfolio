@@ -6,9 +6,7 @@ import laptop from "../../assets/SVGs/laptop.svg";
 function IntroSection() {
   return (
     <>
-      <section
-        className="section h-100vh"
-      >
+      <section className="section h-100vh">
         <div className="main">
           <div className="container">
             <div className="row justify-content-around">
@@ -46,23 +44,6 @@ function IntroSection() {
                   alt="laptop"
                   className="laptop animate__animated animate__zoomInUp animate__delay-2s"
                 />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="section h-100vh" style={{marginTop: "15em"}}>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="text-center">
-                <h2 className="section-title">About Me</h2>
-                <div className="section-title-border margin-t-20"></div>
-                <p className="section-subtitle font-secondary text-muted pt-4">
-                  I am a Software Engineer with a passion for building
-                  applications and websites that provide intuitive, pixel-perfect
-                  user interfaces with efficient and modern backends.
-                </p>
               </div>
             </div>
           </div>

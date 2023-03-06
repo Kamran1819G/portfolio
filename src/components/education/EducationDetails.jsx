@@ -15,7 +15,7 @@ function EducationDetails(props) {
             }}
           />
         </div>
-        <div className="card-body">
+        <div className="education-card-body">
           <div className="body-header">
             <div className="body-header-title">
               <h2 className="card-title">{props.CollegeName}</h2>

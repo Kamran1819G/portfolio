@@ -13,7 +13,7 @@ function Navbar() {
             <img src={logoDark} alt="Logo" className="img-fluid logo-dark" />
           </NavLink>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarCollapse"
@@ -21,7 +21,7 @@ function Navbar() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse justify-content-end" id="navbarCollapse">
             <ul className="navbar-nav ml-auto">
@@ -38,11 +38,6 @@ function Navbar() {
               <li className="nav-item">
                 <NavLink to="/experience" className="nav-link">
                   Experience
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/projects" className="nav-link">
-                  Projects
                 </NavLink>
               </li>
               <li className="nav-item">

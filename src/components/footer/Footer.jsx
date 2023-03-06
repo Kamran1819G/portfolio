@@ -32,7 +32,7 @@ function Footer() {
                   <a
                     href="https://www.linkedin.com/in/kamran1819g"
                     className="social-icon text-muted">
-                    <i class="bi bi-linkedin"></i>
+                    <i className="bi bi-linkedin"></i>
                   </a>
                 </li>
                 <li className="list-inline-item">

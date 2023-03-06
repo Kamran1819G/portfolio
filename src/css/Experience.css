@@ -84,7 +84,15 @@
   padding-top: 1.5rem;
   line-height: normal;
 }
-
+.experience-text-type {
+  text-align: center;
+  color: #000;
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0;
+  padding-top: 1rem;
+  line-height: normal;
+}
 .experience-text-date {
   text-align: center;
   color: #000;
@@ -93,13 +101,8 @@
   padding-top: 1rem;
   font-weight: 600;
 }
-
 .experience-text-desc {
   text-align: center;
-}
-
-.subTitle {
-  color: #868e96 !important;
 }
 
 /* Media Query */
@@ -133,38 +136,5 @@
   }
   .experience-text-desc {
     font-size: 16px;
-  }
-}
-
-@media (max-width: 1380px) {
-  .experience-heading-text {
-    font-size: 50px;
-    margin-top: 80px;
-  }
-
-  .experience-heading-sub-text {
-    font-size: 25px;
-  }
-}
-
-@media (max-width: 768px) {
-  .experience-heading-text {
-    font-size: 30px;
-    margin-top: 20px;
-  }
-
-  .experience-heading-sub-text {
-    font-size: 20px;
-  }
-
-  .experience-heading-div {
-    flex-direction: column;
-  }
-
-  .experience-header-detail-text {
-    font-size: 16px;
-    margin-right: 0px;
-    line-height: normal;
-    text-align: center;
   }
 }

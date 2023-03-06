@@ -9,16 +9,13 @@ import "jquery-ui-dist/jquery-ui.min";
 import { useEffect } from "react";
 
 import Navbar from "./components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
 import Cursor from "./components/cursor/Cursor";
 import Education from "./pages/Education";
 import Home from "./pages/Home";
 import Experience from "./pages/Experience";
-import Projects from "./pages/Projects";
 import Opensource from "./pages/Opensource";
 import Contact from "./pages/Contact";
-
-
+import Footer from "./components/footer/Footer";
 
 function App() {
   useEffect(() => {
@@ -55,7 +52,6 @@ function App() {
         <Route path="/home" component={Home} />
         <Route path="/education" component={Education} />
         <Route path="/experience" component={Experience} />
-        <Route path="/projects" component={Projects} />
         <Route path="/opensource" component={Opensource} />
         <Route path="/contact" component={Contact} />
       </Switch>

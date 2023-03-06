@@ -1,15 +1,13 @@
-@import url("https://fonts.googleapis.com/css?family=Open Sans:400,500,600,700|Montserrat:400,500,600,700|Syne:400,500");
+@import url("https://fonts.googleapis.com/css?family=Open Sans:400,500,600,700|Montserrat:400,500,600,700");
 
 :root {
   --primary-color: #8a74b8;
   --secondary-color: #4c40f7;
-  --text-primary-color: #333333;
+  --text-primary-color: #ffffff;
   --text-secondary-color: #64707d;
   --bg-primary-color: #fff;
   --bg-secondary-color: #f2f2f2;
   --other-color: #ccc;
-  --navbar-bg: rgba(0, 0, 0, 0.1);
-  --rotate-color: #000;
 
   /* Icons */
   --color-1: #e65100;
@@ -19,7 +17,7 @@
 }
 
 body {
-  font-family: "Open Sans";
+  font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
@@ -33,20 +31,16 @@ body {
   padding-right: 5%;
 }
 .section-title {
-  font-family: "Syne" !important;
   font-size: 56px;
   font-weight: 400;
   line-height: 1.1;
   text-align: center;
-  margin-top: 60px;
 }
 .section-subtitle {
-  font-family: "Nunito Sans" !important;
   font-size: 30px;
   text-align: center;
 }
 .section-description {
-  font-family: "Open Sans" !important;
   font-size: 20px;
   line-height: 30px;
   margin-left: 20px;
