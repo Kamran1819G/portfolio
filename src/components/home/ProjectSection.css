@@ -29,6 +29,9 @@
   left: 46%;
 }
 @media (max-width: 768px) {
+  .project-section {
+    margin-top: 1rem;
+  }
   .slick-list {
     overflow: hidden !important;
   }

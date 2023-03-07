@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import Experience from "./pages/Experience";
 import Contact from "./pages/Contact";
 import Footer from "./components/footer/Footer";
+import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 
 function App() {
   useEffect(() => {
@@ -45,6 +46,7 @@ function App() {
   }, []);
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
