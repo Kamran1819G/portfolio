@@ -7,7 +7,7 @@ function ExperienceCard(props) {
   return (
     <>
       <div className="col">
-        <div className="experience-card">
+        <div className="experience-card" data-aos="zoom-in" data-aos-delay="250">
           <div className="experience-banner" style={style}>
             <div className="experience-blurred_div"></div>
             <div className="experience-div-company">

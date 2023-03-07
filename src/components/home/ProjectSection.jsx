@@ -84,7 +84,7 @@ function ProjectSection() {
           </div>
         </div>
         <div style={{ marginTop: "5em" }}>
-          <Slider {...settings}>
+          <Slider {...settings} >
             <ProjectCard
               title="Algopedia"
               img={Algopedia}

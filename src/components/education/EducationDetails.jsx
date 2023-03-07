@@ -2,9 +2,9 @@ import React from "react";
 
 function EducationDetails(props) {
   return (
-    <div className="educations-body-div" data-aos="fade-up">
+    <div className="educations-degree-div" data-aos="zoom-in" data-aos-delay="150">
       <div className="degree-card">
-        <div className="card-img">
+        <div className="degree-card-img">
           <img
             src={props.img}
             alt={props.imgAlt}
@@ -15,18 +15,18 @@ function EducationDetails(props) {
             }}
           />
         </div>
-        <div className="education-card-body">
-          <div className="body-header">
-            <div className="body-header-title">
-              <h2 className="card-title">{props.CollegeName}</h2>
-              <h3 className="card-subtitle">{props.education}</h3>
+        <div className="education-card-degree">
+          <div className="degree-header">
+            <div className="degree-header-title">
+              <h2 className="degree-card-title">{props.CollegeName}</h2>
+              <h3 className="degree-card-subtitle">{props.education}</h3>
             </div>
-            <div className="body-header-duration">
+            <div className="degree-header-duration">
               <h3 className="duration">{props.year}</h3>
             </div>
           </div>
-          <div className="body-content">
-            <p className="content-list">{props.description}</p>
+          <div className="degree-content">
+            <p className="degree-content-list">{props.description}</p>
           </div>
         </div>
       </div>

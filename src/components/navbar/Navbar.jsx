@@ -41,11 +41,6 @@ function Navbar() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to="/opensource" className="nav-link">
-                  Open Source
-                </NavLink>
-              </li>
-              <li className="nav-item">
                 <NavLink to="/contact" className="nav-link">
                   Contact Me
                 </NavLink>

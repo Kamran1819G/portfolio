@@ -1,43 +1,5 @@
-.main {
-  position: relative;
-}
-.main_wrap {
-  position: relative;
-  max-width: 50vh;
-  z-index: 1;
-}
-.stage {
-  position: relative;
-  margin-bottom: 24px;
-  padding-left: 68px;
-  font-size: 20px;
-  line-height: 1.4;
-  font-weight: 600;
-  color: var(--secondary-color);
-}
-.stage:before {
-  content: "";
-  position: absolute;
-  top: 15px;
-  left: 0;
-  width: 52px;
-  height: 2px;
-  background: var(--secondary-color);
-}
-.main_title {
-  perspective: 400px;
-  transform-style: preserve-3d;
-}
-@media only screen and (max-width: 767px) {
-  .main_title {
-    font-size: 32px;
-    line-height: 1.5;
-    letter-spacing: -0.15px;
-  }
-}
-.main_title span {
-  display: block;
-}
+/* Helper */
+
 .h1,
 .h2,
 .h3,
@@ -117,6 +79,48 @@
 .h6 {
   font-size: 20px;
   line-height: 1.4;
+}
+
+/* Home CSS*/
+.main {
+  position: relative;
+}
+.main_wrap {
+  position: relative;
+  max-width: 50vh;
+  z-index: 1;
+}
+.stage {
+  position: relative;
+  margin-bottom: 24px;
+  padding-left: 68px;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+.stage:before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 52px;
+  height: 2px;
+  background: var(--secondary-color);
+}
+.main_title {
+  perspective: 400px;
+  transform-style: preserve-3d;
+}
+@media only screen and (max-width: 767px) {
+  .main_title {
+    font-size: 32px;
+    line-height: 1.5;
+    letter-spacing: -0.15px;
+  }
+}
+.main_title span {
+  display: block;
 }
 
 .scroll {
