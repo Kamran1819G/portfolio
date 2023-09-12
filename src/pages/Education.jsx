@@ -8,8 +8,8 @@ import SPHS from "../assets/images/SPHS.png";
 
 import codechef from "../assets/organizations/codechef.png";
 import leetcode from "../assets/organizations/leetcode.png";
-import hackerrank from "../assets/organizations/hackerrank.png";
-import unstop from "../assets/organizations/unstop.png";
+import geeksforgeeks from "../assets/organizations/geeksforgeeks.jpg";
+import codingninjas from "../assets/organizations/codingninjas.jpg";
 import coursera from "../assets/organizations/coursera.png";
 import gcp from "../assets/organizations/gcp.png";
 
@@ -39,19 +39,19 @@ function Education() {
           </a>
           <a
             className="img-container"
-            href="https://www.hackerrank.com/kamran1819g"
+            href="https://auth.geeksforgeeks.org/user/kamran1819g"
             target="_blank"
             rel="noreferrer"
           >
-            <img src={hackerrank} alt="hackerrank" className="img hackerrank" />
+            <img src={geeksforgeeks} alt="GeeksforGeeks" className="img hackerrank" />
           </a>
           <a
             className="img-container"
-            href="https://unstop.com/u/Kamran1819G"
+            href="https://www.codingninjas.com/studio/profile/8015d99d-e5c9-4cc5-9ca3-644f341086f0"
             target="_blank"
             rel="noreferrer"
           >
-            <img src={unstop} alt="unstop" className="img unstop" />
+            <img src={codingninjas} alt="Coding Ninjas" className="img unstop" />
           </a>
           <a
             className="img-container"

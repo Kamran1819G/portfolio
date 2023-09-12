@@ -15,42 +15,17 @@ function Experience() {
         <div className="container">
           <h1 className="section-title mb-5">Experiences</h1>
           <div className="row row-cols-1 row-cols-md-3 g-4">
-            <ExperienceCard
-              bgColor="rgb(34, 34, 34)"
-              companyName="IIT Delhi"
-              img={rendezvous}
-              imgAlt="Rendezvous"
-              position="Campus Ambassador"
-              type="Internship"
-              year="Feb 2023 - Present"
-            />
-            <ExperienceCard
-              bgColor="rgb(34, 34, 34)"
-              companyName="Internshala"
-              img={internshala}
-              imgAlt="Internshala"
-              position="Student Partner"
-              type="Internship"
-              year="Dec 2022 - Present"
-              description=""
-              point1="• I received training and guidance from Internshala's marketing team, which helped me develop my skills in marketing, event management, and social media management."
-              point2="• Overall, my experience as an Internshala Student Partner provided me with valuable skills in marketing, event management, and social media management. I gained experience working collaboratively with a team and learned about the latest trends and techniques used in the industry."
-            />
-            <ExperienceCard
+          <ExperienceCard
               bgColor="rgb(34, 34, 34)"
               companyName="CodeChef BVPDET-NM"
               img={codechefBVPDET}
               imgAlt="CodeChef BVPDET-NM"
               position="DSA Mentor"
               type="Full Time"
-              year="Sep 2022 - Present"
-              point1="• Led and organized various activities related to data structures and algorithms, such as guest lectures, coding competitions and study groups/workshops."
-              point2="• Provided resources and guidance to help members prepare for technical interviews and competitions."
-              point3="• Improved technical skills and knowledge of members in the area of data structures and algorithms."
-              point4="• Guided members on DSA problems and helped them to solve it."
-              point5="• Arranged practice sessions and mock tests for members."
-              point6="• Motivated members to participate in DSA-related competitions and events."
-              point7="• Created a community of DSA enthusiasts within the chapter."
+              year="Sep 2022 - Aug 2023"
+              point1="• Organized and led 10+ activities, fostering a community of 200+ DSA enthusiasts."
+              point2="• Provided resources, guidance, and conducted 10+ practice sessions, improving members’ technical skills by 30%."
+              point3="• Mentored members in solving 100+ DSA problems, enhancing their problem-solving abilities."
             />
             <ExperienceCard
               bgColor="rgb(34, 34, 34)"
@@ -59,11 +34,11 @@ function Experience() {
               imgAlt="GeeksforGeeks BVPDET-NM"
               position="Web Developer"
               type="Full Time"
-              year="Oct 2022 - Present"
-              point1="• Created and maintained the chapter's website."
-              point2="• Ensured that the website was responsive and worked well on different devices and browsers."
-              point3="• Wrote clean, maintainable, and efficient code using best practices and coding conventions."
-              point4="• Optimized the performance of the website using techniques such as caching, minification, and compression."
+              year="Oct 2022 - Aug 2023"
+              point1="• Created and maintained the chapter’s responsive website."
+              point2="• Crafted clean and efficient code following industry best practices."
+              point3="• Optimized website performance, resulting in a 30% boost in loading speed"
+              point4="• Collaborated with a team of 5 members to implement innovative features on the website."
             />
             <ExperienceCard
               bgColor="rgb(34, 34, 34)"
@@ -72,7 +47,30 @@ function Experience() {
               imgAlt="GDSC BVPDET-NM"
               position="Executive Member"
               type="Full Time"
-              year="Oct 2022 - Present"
+              year="Oct 2022 - Jul 2023"
+              point1 = "• Managed and updated the chapter’s website, ensuring its responsiveness and compatibility across 15+ devices and browsers."
+              point2 = "• Engineered clean, efficient code using best practices and coding conventions, leading to a 20% enhancement in website performance."
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="IIT Delhi"
+              img={rendezvous}
+              imgAlt="Rendezvous"
+              position="Campus Ambassador"
+              type="Internship"
+              year="Feb 2023 - Mar 2023"
+            />
+            <ExperienceCard
+              bgColor="rgb(34, 34, 34)"
+              companyName="Internshala"
+              img={internshala}
+              imgAlt="Internshala"
+              position="Student Partner"
+              type="Internship"
+              year="Dec 2022 - Feb 2023"
+              description=""
+              point1="• I received training and guidance from Internshala's marketing team, which helped me develop my skills in marketing, event management, and social media management."
+              point2="• Overall, my experience as an Internshala Student Partner provided me with valuable skills in marketing, event management, and social media management. I gained experience working collaboratively with a team and learned about the latest trends and techniques used in the industry."
             />
             <ExperienceCard
               bgColor="rgb(34, 34, 34)"
@@ -90,7 +88,7 @@ function Experience() {
               imgAlt="Uable"
               position="Club Manager"
               type="Internship"
-              year="Nov 2021 - jan 2022"
+              year="Nov 2021 - Jan 2022"
               description=""
               point1="• Meeting with teams to resolve problems, prioritize needs, define content criteria, or select solutions."
               point2="• Directing or conducting out app updates."

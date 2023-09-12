@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProjectCard from "./project/ProjectCard";
+import NaviXplore from "../../assets/projects/NaviXplore.jpg";
 import Algopedia from "../../assets/projects/algopedia.png";
 import PortfolioV1 from "../../assets/projects/portfolioV1.png";
 import LMS from "../../assets/projects/LMS.png";
@@ -86,6 +87,18 @@ function ProjectSection() {
         <div style={{ marginTop: "5em" }}>
           <Slider {...settings} >
             <ProjectCard
+              title="NaviXplore"
+              img={NaviXplore}
+              btnText = "Live View"
+              liveview="https://navixplore.vercel.app/"
+              sourcecode="https://github.com/kamran1819g/navixplore"
+              description="Navi Mumbai Transport Technology Company. Making travel better for everyone!"
+              dart = "dart"
+              flutter = "flutter"
+              firebase = "firebase"
+              react = "react"
+              />
+            <ProjectCard
               title="Algopedia"
               img={Algopedia}
               btnText="Live View"
@@ -160,7 +173,6 @@ function ProjectSection() {
               html="html"
               css="css"
               javascript="javascript"
-              react="react"
             />
           </Slider>
         </div>

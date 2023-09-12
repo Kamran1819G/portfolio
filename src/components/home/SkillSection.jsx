@@ -28,7 +28,7 @@ function SkillSection() {
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>CSS</p>
-              <p>90%</p>
+              <p>100%</p>
               <div class="skill">
                 <div class="skill_level" style={{ width: "90%" }}></div>
               </div>
@@ -49,16 +49,16 @@ function SkillSection() {
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>NodeJS</p>
-              <p>70%</p>
+              <p>20%</p>
               <div class="skill">
-                <div class="skill_level" style={{ width: "70%" }}></div>
+                <div class="skill_level" style={{ width: "20%" }}></div>
               </div>
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>JSON</p>
-              <p>80%</p>
+              <p>100%</p>
               <div class="skill">
-                <div class="skill_level" style={{ width: "80%" }}></div>
+                <div class="skill_level" style={{ width: "100%" }}></div>
               </div>
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
@@ -77,9 +77,9 @@ function SkillSection() {
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>C</p>
-              <p>60%</p>
+              <p>40%</p>
               <div class="skill">
-                <div class="skill_level" style={{ width: "60%" }}></div>
+                <div class="skill_level" style={{ width: "40%" }}></div>
               </div>
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
@@ -98,9 +98,9 @@ function SkillSection() {
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>Python</p>
-              <p>50%</p>
+              <p>60%</p>
               <div class="skill">
-                <div class="skill_level" style={{ width: "50%" }}></div>
+                <div class="skill_level" style={{ width: "60%" }}></div>
               </div>
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
@@ -133,16 +133,16 @@ function SkillSection() {
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>google cloud</p>
-              <p>50%</p>
+              <p>80%</p>
               <div class="skill">
-                <div class="skill_level" style={{ width: "50%" }}></div>
+                <div class="skill_level" style={{ width: "80%" }}></div>
               </div>
             </div>
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>LeaderShip</p>
-              <p>70%</p>
+              <p>80%</p>
               <div class="skill">
-                <div class="skill_level" style={{ width: "70%" }}></div>
+                <div class="skill_level" style={{ width: "80%" }}></div>
               </div>
             </div>
           </div>

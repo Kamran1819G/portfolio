@@ -28,10 +28,10 @@ function ProjectCard(props) {
             <span className="badge" style={{ background: "#8B7D6B" }}>
               {props.python}
             </span>
-            <span className="badge" style={{ background: "#1FBED6" }}>
+            <span className="badge" style={{ background: "#ed272c" }}>
               {props.java}
             </span>
-            <span className="badge" style={{ background: "" }}>
+            <span className="badge" style={{ background: "#3f4cb0" }}>
               {props.cpp}
             </span>
             <span className="badge" style={{ background: "" }}>
@@ -40,6 +40,31 @@ function ProjectCard(props) {
             <span className="badge" style={{ background: "" }}>
               {props.typescript}
             </span>
+            <span className="badge" style={{ background: "#30b8f6" }}>
+              {props.flutter}
+            </span>
+            <span className="badge" style={{ background: "#0a5d9e" }}>
+              {props.dart}
+            </span>
+            <span className="badge" style={{ background: "#f58613" }}>
+              {props.firebase}
+            </span>
+            <span className="badge" style={{ background: "" }}>
+              {props.mysql}
+            </span>
+            <span className="badge" style={{ background: "" }}>
+              {props.mongodb}
+            </span>
+            <span className="badge" style={{ background: "" }}>
+              {props.nodejs}
+            </span>
+            <span className="badge" style={{ background: "" }}>
+              {props.expressjs}
+            </span>
+            <span className="badge" style={{ background: "" }}>
+              {props.git}
+            </span>
+
           </div>
           <Card.Text>{props.description}</Card.Text>
           <div className="project-card-links">
