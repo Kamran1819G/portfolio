@@ -70,7 +70,7 @@ function ProjectSection() {
   };
   return (
     <>
-      <section className="project-section my-5 py-5 px-5 mx-5">
+      <section className="project-section my-5 py-5">
         <Container>
           <Row>
             <div className="stage">Projects</div>
