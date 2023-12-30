@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/Education.css";
+import "../styles/Education.scss";
 import EducationDetails from "../components/education/EducationDetails";
 import CertificateDetails from "../components/education/CertificateDetails";
 import BVPDU from "../assets/images/BVPDU.png";

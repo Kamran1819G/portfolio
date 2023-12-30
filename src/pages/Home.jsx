@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/Home.css";
+import "../styles/Home.scss";
 import IntroSection from "../components/home/IntroSection";
 import ProjectSection from "../components/home/ProjectSection";
 import SkillSection from "../components/home/SkillSection";

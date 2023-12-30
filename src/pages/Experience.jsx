@@ -1,6 +1,6 @@
 import React from "react";
 import ExperienceCard from "../components/experience/ExperienceCard";
-import "../css/Experience.css";
+import "../styles/Experience.scss"
 import uable from "../assets/experience/uable.png";
 import internshala from "../assets/experience/internshala.png";
 import rendezvous from "../assets/experience/rendezvous.png";
