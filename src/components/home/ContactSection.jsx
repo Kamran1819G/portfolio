@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import "./ContactSection.css"
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
+import AOS from "aos";
+import "./ContactSection.scss";
 import Avatar from "../../assets/SVGs/Avatar2.svg";
 import WIFI from "../../assets/SVGs/wifi.svg";
 
@@ -16,13 +17,20 @@ function ContactSection() {
 
     setValidated(true);
   };
+
+  useEffect(() => {
+    AOS.init({
+      offset: 120,
+      delay: 0,
+    });
+  }, []);
   return (
     <>
-      <section className="contact-section section" id="contact">
+      <section className="contact-section my-5" id="contact">
         <Container>
           <Row>
             <div className="stage">Say hello👋</div>
-            <h1 className="h1">
+            <h1 className="fw-bolder display-2">
               <span data-aos="zoom-in-up" data-aos-delay="150">
                 Contact Me
               </span>

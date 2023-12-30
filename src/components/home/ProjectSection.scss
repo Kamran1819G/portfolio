@@ -1,16 +1,26 @@
 .project-section {
   margin-top: 10rem;
   overflow-y: visible;
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
 }
 
 .slick-list {
   padding: 20px !important;
   overflow: visible !important;
+
+  @media (max-width: 768px) {
+    overflow: hidden !important;
+  }
 }
+
 .slick-slide:hover {
   transform: scale(1.05);
   transition: all 0.5s ease;
 }
+
 .Arrow {
   position: absolute;
   width: 50px;
@@ -21,27 +31,24 @@
   transition: all 0.3s ease;
   z-index: 1;
   bottom: -70px;
-}
-.nextArrow {
-  right: 46%;
-}
-.prevArrow {
-  left: 46%;
-}
-@media (max-width: 768px) {
-  .project-section {
-    margin-top: 1rem;
-  }
-  .slick-list {
-    overflow: hidden !important;
-  }
-  .Arrow {
+
+  @media (max-width: 768px) {
     bottom: -90px;
   }
-  .nextArrow {
+}
+
+.nextArrow {
+  right: 46%;
+
+  @media (max-width: 768px) {
     right: 35%;
   }
-  .prevArrow {
+}
+
+.prevArrow {
+  left: 46%;
+
+  @media (max-width: 768px) {
     left: 35%;
   }
 }

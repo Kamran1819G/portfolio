@@ -1,28 +1,37 @@
-import React from "react";
+import React, {useEffect} from "react";
+import { Container, Row } from "react-bootstrap";
 import Scroll from "../../assets/SVGs/scroll.svg";
 import Avatar from "../../assets/SVGs/Avatar.svg";
 import laptop from "../../assets/SVGs/laptop.svg";
+import AOS from "aos";
+
 
 function IntroSection() {
+  useEffect(() => {
+    AOS.init({
+      offset: 120,
+      delay: 0,
+    });
+  }, []);
   return (
     <>
-      <section className="section h-100vh">
+      <section className="vh-100 my-5 py-5">
         <div className="main">
-          <div className="container">
-            <div className="row justify-content-around">
+          <Container>
+            <Row className="justify-content-around">
               <div className="main_wrap">
                 <div className="stage">Introduction</div>
-                <h1 className="main_title h1">
-                  <span data-aos="zoom-in-up" data-aos-delay="150">
+                <h1 className="main_title fw-bolder display-2">
+                  <span data-aos="zoom-in-up">
                     Hello, my
                   </span>
-                  <span data-aos="zoom-in-up" data-aos-delay="200">
+                  <span data-aos="zoom-in-up">
                     name's Kamran Khan.
                   </span>
-                  <span data-aos="zoom-in-up" data-aos-delay="250">
+                  <span data-aos="zoom-in-up">
                     I'm a Software
                   </span>
-                  <span data-aos="zoom-in-up" data-aos-delay="300">
+                  <span data-aos="zoom-in-up">
                     Engineer.
                   </span>
                 </h1>
@@ -45,8 +54,8 @@ function IntroSection() {
                   className="laptop animate__animated animate__zoomInUp animate__delay-2s"
                 />
               </div>
-            </div>
-          </div>
+            </Row>
+          </Container>
         </div>
       </section>
     </>

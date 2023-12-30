@@ -1,5 +1,6 @@
 import React from "react";
-import "./ProjectSection.css";
+import { Container, Row } from "react-bootstrap";
+import "./ProjectSection.scss";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -33,10 +34,10 @@ function PrevArrow(props) {
 function ProjectSection() {
   const settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     draggable: true,
     slidesToShow: 3,
-    speed: 1000,
+    speed: 500,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
@@ -69,11 +70,11 @@ function ProjectSection() {
   };
   return (
     <>
-      <section className="section project-section">
-        <div className="container">
-          <div className="row">
+      <section className="project-section my-5 py-5 px-5 mx-5">
+        <Container>
+          <Row>
             <div className="stage">Projects</div>
-            <h1 className="h1">
+            <h1 className="fw-bolder display-2">
               <span data-aos="zoom-in-up" data-aos-delay="150">
                 Some things
               </span>
@@ -82,9 +83,9 @@ function ProjectSection() {
                 I've worked on.
               </span>
             </h1>
-          </div>
-        </div>
-        <div style={{ marginTop: "5em" }}>
+          </Row>
+        </Container>
+        <div className="mt-5">
           <Slider {...settings} >
             <ProjectCard
               title="NaviXplore"

@@ -1,4 +1,5 @@
 import React from "react";
+import { Col } from "react-bootstrap";
 
 function ExperienceCard(props) {
   const style = {
@@ -6,7 +7,7 @@ function ExperienceCard(props) {
   };
   return (
     <>
-      <div className="col">
+      <Col>
         <div className="experience-card" data-aos="zoom-in" data-aos-delay="250">
           <div className="experience-banner" style={style}>
             <div className="experience-blurred_div"></div>
@@ -44,7 +45,7 @@ function ExperienceCard(props) {
             </ul>
           </div>
         </div>
-      </div>
+      </Col>
     </>
   );
 }

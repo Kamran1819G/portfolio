@@ -9,34 +9,40 @@
   width: auto;
   height: 200px;
   box-shadow: 5px 5px 5px 5px #d9dbdf;
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.5s ease;
+  }
 }
-.img:hover {
-  transform: scale(1.1);
-  transition: all 0.5s ease;
-}
+
 .codechef {
   left: 25px;
   transform: rotateZ(20deg);
 }
+
 .leetcode {
   right: 60px;
   transform: rotateZ(-20deg);
 }
+
 .hackerrank {
   right: 60px;
   bottom: 50px;
   transform: rotateZ(20deg);
 }
+
 .unstop {
   bottom: 50px;
   left: calc(50% + 200px);
   transform: rotateZ(20deg);
 }
+
 .coursera {
   left: calc(50% - 300px);
   bottom: 50px;
   transform: rotateZ(-20deg);
 }
+
 .gcp {
   left: 0px;
   bottom: 50px;
@@ -53,30 +59,6 @@
   }
   .img {
     height: 100px;
-  }
-  .codechef {
-    top: calc(50% - 50px);
-    left: 40px;
-  }
-  .leetcode {
-    top: calc(50% - 20px);
-    right: 40px;
-  }
-  .hackerrank {
-    right: 20px;
-    bottom: 0px;
-  }
-  .gcp {
-    left: 50px;
-    bottom: 0px;
-  }
-  .unstop {
-    bottom: 150px;
-    left: calc(50%);
-  }
-  .coursera {
-    bottom: 150px;
-    left: calc(50% - 150px);
   }
 }
 
@@ -123,6 +105,7 @@
 .degree-header-duration {
   width: 20%;
 }
+
 .duration {
   font-size: 16px;
   font-weight: 700;
@@ -154,6 +137,7 @@
   margin: 10px;
   box-shadow: 5px 5px 5px 5px #d9dbdf !important;
 }
+
 @media (max-width: 768px) {
   .degree-card {
     flex-direction: column;
@@ -186,28 +170,11 @@
 }
 
 .cert-card {
-  display: flex;
   width: 400px;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   border: 1px solid #d9dbdf;
   border-radius: 10px;
   box-shadow: 5px 5px 5px #d9dbdf;
   margin: 10px;
-}
-
-.cert-header {
-  margin: 0px;
-}
-
-.cert_img {
-  width: auto;
-  height: 100px;
-}
-
-.cert-body {
-  margin: 0px;
 }
 
 .cert-body-title {
@@ -221,28 +188,10 @@
   font-size: 18px;
   margin: 10px;
 }
-.content {
-  position: relative;
-  width: 100%;
-  margin: auto;
-  overflow: hidden;
-}
 
 @media (max-width: 768px) {
   .cert-card {
     width: 100%;
-  }
-  .cert_img {
-    height: 80px;
-  }
-  .cert-body {
-    margin: 0px;
-  }
-  .cert-body-title {
-    font-size: 18px;
-  }
-  .cert-body-subtitle {
-    font-size: 16px;
   }
   .content {
     width: 100%;

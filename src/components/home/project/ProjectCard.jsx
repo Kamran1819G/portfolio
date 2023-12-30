@@ -1,11 +1,11 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import "./ProjectCard.css";
+import "./ProjectCard.scss";
 
 function ProjectCard(props) {
   return (
     <>
-      <Card style={{ width: "20rem" }}>
+      <Card style={{ width: "20rem" }} className="project-card">
         <Card.Img variant="top" src={props.img} />
         <Card.Body>
           <Card.Title>{props.title}</Card.Title>

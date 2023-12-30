@@ -1,21 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+import AOS from "aos";
 
 function EducationDetails(props) {
+  useEffect(() => {
+    AOS.init({
+      offset: 120,
+      delay: 0,
+    });
+  }, []);
   return (
-    <div className="educations-degree-div" data-aos="zoom-in" data-aos-delay="150">
-      <div className="degree-card">
-        <div className="degree-card-img">
-          <img
-            src={props.img}
-            alt={props.imgAlt}
-            style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              transform: "scale(1, 1)",
-            }}
-          />
-        </div>
-        <div className="education-card-degree">
+      <div className="degree-card" data-aos="zoom-in" data-aos-delay="150">
+        <img
+          src={props.img}
+          alt={props.imgAlt}
+          style={{
+            transform: "scale(1, 1)",
+          }}
+          className="degree-card-img mx-5"
+        />
+        <div className="education-card-degree px-3 py-3 bg-white">
           <div className="degree-header">
             <div className="degree-header-title">
               <h2 className="degree-card-title">{props.CollegeName}</h2>
@@ -30,7 +34,6 @@ function EducationDetails(props) {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

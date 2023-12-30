@@ -1,6 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ExperienceCard from "../components/experience/ExperienceCard";
 import "../styles/Experience.scss"
+import { Container, Row } from "react-bootstrap";
+import AOS from "aos";
+
 import uable from "../assets/experience/uable.png";
 import internshala from "../assets/experience/internshala.png";
 import rendezvous from "../assets/experience/rendezvous.png";
@@ -9,12 +12,18 @@ import gfgbvpdet from "../assets/experience/gfgbvpdet-nm.jpg";
 import gdscbvpdet from "../assets/experience/gdsc-bvpdetnm.jpg";
 
 function Experience() {
+  useEffect(() => {
+    AOS.init({
+      offset: 120,
+      delay: 0,
+    });
+  }, []);
   return (
     <>
-      <section className="section">
-        <div className="container">
-          <h1 className="section-title mb-5">Experiences</h1>
-          <div className="row row-cols-1 row-cols-md-3 g-4">
+      <section className="my-5 py-5">
+        <Container>
+          <h1 className="text-center display-4 fw-bolder mb-5">Experiences</h1>
+          <Row className="row-cols-1 row-cols-md-3 g-4">
           <ExperienceCard
               bgColor="rgb(34, 34, 34)"
               companyName="CodeChef BVPDET-NM"
@@ -95,8 +104,8 @@ function Experience() {
               point3="• Ensuring Users follow company policies and procedures."
               point4="• Conducting and Hosting Events on app."
             />
-          </div>
-        </div>
+          </Row>
+        </Container>
       </section>
     </>
   );

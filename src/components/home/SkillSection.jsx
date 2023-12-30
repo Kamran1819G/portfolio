@@ -1,14 +1,15 @@
 import React from "react";
-import "./SkillSection.css";
+import { Container, Row } from "react-bootstrap";
+import "./SkillSection.scss";
 
 function SkillSection() {
   return (
     <>
-      <section className="skill-section section">
-        <div className="container">
-        <div className="row">
+      <section className="skill-section my-5 py-5">
+        <Container>
+        <Row>
             <div className="stage">skills</div>
-            <h1 className="h1">
+            <h1 className="fw-bolder display-2">
               <span data-aos="zoom-in-up" data-aos-delay="150">
                 Skills that
               </span>
@@ -17,8 +18,8 @@ function SkillSection() {
                 I've acquired
               </span>
             </h1>
-          </div>
-          <div className="row justify-content-around">
+          </Row>
+          <Row className="justify-content-around">
             <div class="skillBox" data-aos="zoom-in" data-aos-delay="100">
               <p>HTML5</p>
               <p>100%</p>
@@ -145,8 +146,8 @@ function SkillSection() {
                 <div class="skill_level" style={{ width: "80%" }}></div>
               </div>
             </div>
-          </div>
-        </div>
+          </Row>
+        </Container>
       </section>
     </>
   );
