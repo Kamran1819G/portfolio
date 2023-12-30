@@ -26,7 +26,7 @@ function ContactSection() {
   }, []);
   return (
     <>
-      <section className="contact-section my-5" id="contact">
+      <section className="contact-section my-5 py-5" id="contact">
         <Container>
           <Row>
             <div className="stage">Say hello👋</div>
