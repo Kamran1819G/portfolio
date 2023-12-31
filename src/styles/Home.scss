@@ -2,11 +2,6 @@
 .main {
   position: relative;
 }
-.main_wrap {
-  position: relative;
-  max-width: 50vh;
-  z-index: 1;
-}
 .stage {
   position: relative;
   margin-bottom: 24px;
@@ -88,4 +83,104 @@
   grid-row: 1;
   width: 60%;
   height: 60%;
+}
+
+.project-section {
+  margin-top: 10rem;
+  overflow-y: visible;
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
+}
+
+.slick-list {
+  padding: 20px !important;
+  overflow: visible !important;
+
+  @media (max-width: 768px) {
+    overflow: hidden !important;
+  }
+}
+
+.slick-slide:hover {
+  transform: scale(1.05);
+  transition: all 0.5s ease;
+}
+
+.Arrow {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1;
+  bottom: -70px;
+
+  @media (max-width: 768px) {
+    bottom: -90px;
+  }
+}
+
+.nextArrow {
+  right: 46%;
+
+  @media (max-width: 768px) {
+    right: 35%;
+  }
+}
+
+.prevArrow {
+  left: 46%;
+
+  @media (max-width: 768px) {
+    left: 35%;
+  }
+}
+
+.skill-section {
+  margin-top: 5rem;
+  padding-top: 5rem;
+
+  .skillBox {
+    box-sizing: border-box;
+    width: calc(100% / 3 - 20px);
+    margin: 20px 0;
+
+    p {
+      text-transform: uppercase;
+      margin: 0 0 10px;
+      padding: 0;
+      font-weight: bolder;
+      letter-spacing: 1px;
+
+      &:nth-child(2) {
+        float: right;
+        position: relative;
+        top: -25px;
+      }
+    }
+
+    .skill {
+      background: #f2f2f2;
+      padding: 4px;
+      box-sizing: border-box;
+      border: 1px solid var(--primary-color);
+      border-radius: 10px;
+    }
+
+    .skill_level {
+      background: var(--primary-color);
+      height: 10px;
+      border-radius: 10px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .skillBox {
+    width: 100%;
+  }
 }

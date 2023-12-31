@@ -1,12 +1,13 @@
 import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 
 function Footer() {
   return (
     <>
     <footer className="sticky bg-light">
-      <div className="container">
-        <div className="row pt-4 pb-4">
-          <div className="col-lg-12 d-flex justify-content-between">
+      <Container>
+        <Row className="pt-4 pb-4">
+          <Col lg={12} className="d-flex justify-content-between">
             <div className="float-left float_none mt-2 mb-2">
               <p className="copy-rights text-muted mb-0">
                 Made with 💖 by Kamran Khan..
@@ -44,9 +45,9 @@ function Footer() {
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </footer>
     </>
   )

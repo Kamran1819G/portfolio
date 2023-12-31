@@ -1,10 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { NavLink } from "react-router-dom";
-
-import "./Navbar.css";
+import $ from "jquery";
+import "./Navbar.scss";
 import logoDark from "../../assets/images/logo dark.png";
 
 function Navbar() {
+  useEffect(() => {
+    $(window).on("scroll", function () {
+      $(window).scrollTop() >= 50
+        ? $(".sticky").addClass("stickyadd")
+        : $(".sticky").removeClass("stickyadd");
+    });
+  }, []);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg fixed-top custom-nav sticky">
