@@ -1,10 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import $ from "jquery";
 import "./Navbar.scss";
 import logoDark from "../../assets/images/logo dark.png";
 
-function Navbar() {
+function MyNavbar() {
   useEffect(() => {
     $(window).on("scroll", function () {
       $(window).scrollTop() >= 50
@@ -15,50 +16,32 @@ function Navbar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg fixed-top custom-nav sticky">
-        <div className="container">
-          <NavLink className="navbar-brand logo" to="/home">
+      <Navbar collapseOnSelect expand="lg" fixed="top" className="custom-nav sticky">
+        <Container>
+          <Navbar.Brand className="navbar-brand logo" to="/home">
             <img src={logoDark} alt="Logo" className="img-fluid logo-dark" />
-          </NavLink>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarCollapse"
-            aria-controls="navbarCollapse"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <NavLink to="/home" className="nav-link">
-                  Intro
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/education" className="nav-link">
-                  Education
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/experience" className="nav-link">
-                  Experience
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/contact" className="nav-link">
-                  Contact Me
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
+            <Nav className="ml-auto">
+              <NavLink to="/home" className="nav-link">
+                Intro
+              </NavLink>
+              <NavLink to="/education" className="nav-link">
+                Education
+              </NavLink>
+              <NavLink to="/experience" className="nav-link">
+                Experience
+              </NavLink>
+              <NavLink to="/contact" className="nav-link">
+                Contact Me
+              </NavLink>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     </>
   );
 }
 
-export default Navbar;
+export default MyNavbar;

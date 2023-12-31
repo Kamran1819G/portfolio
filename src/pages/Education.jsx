@@ -107,7 +107,7 @@ function Education() {
       </section>
       <section className="my-5">
         <Container>
-            <h1 className="text-center display-5 fw-bolder my-5">Professional Certifications</h1>
+            <h1 className="text-center display-5 fw-bolder my-5">Certifications</h1>
           <Row className="justify-content-start">
             <CertificateDetails
               certLink="https://www.coursera.org/account/accomplishments/specialization/certificate/686AQHGRWYFL"

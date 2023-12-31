@@ -12,39 +12,37 @@
     border-radius: 0.8rem;
     text-align: center;
 
-    li {
-      a {
+    .nav-link {
+      color: #fff !important;
+      font-size: 16px;
+      background-color: transparent !important;
+      padding: 15px 0;
+      position: relative;
+      margin: 0 7px;
+      font-weight: 600;
+      transition: all 0.4s;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 10%;
+        height: 6px;
+        width: 6px;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0;
+        transform: translateX(-50%);
+        transition: all 0.3s ease 0s;
+      }
+
+      &:hover,
+      &:active,
+      &.active {
         color: #fff !important;
-        font-size: 16px;
-        background-color: transparent !important;
-        padding: 15px 0;
-        position: relative;
-        margin: 0 7px;
-        font-weight: 600;
-        transition: all 0.4s;
 
         &::before {
-          content: "";
-          position: absolute;
-          left: 50%;
-          bottom: 10%;
-          height: 6px;
-          width: 6px;
-          background: #fff;
-          border-radius: 50%;
-          opacity: 0;
-          transform: translateX(-50%);
-          transition: all 0.3s ease 0s;
-        }
-
-        &:hover,
-        &:active,
-        &.active {
-          color: #fff !important;
-
-          &::before {
-            opacity: 1;
-          }
+          opacity: 1;
         }
       }
     }
@@ -59,7 +57,7 @@
   }
 
   &.stickyadd {
-    .navbar-nav li a {
+    .navbar-nav .nav-link {
       color: #fff;
     }
   }
@@ -75,12 +73,12 @@
     padding: 10px 0px !important;
     background-color: #fff !important;
 
-    .navbar-nav li a::before {
+    .navbar-nav .nav-link::before {
       content: "";
       display: none;
     }
 
-    .navbar-nav li a {
+    .navbar-nav .nav-link {
       margin: 0 0px;
       padding: 6px 0;
       color: #fff !important;
