@@ -16,14 +16,14 @@ function MyNavbar() {
 
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" fixed="top" className="custom-nav sticky">
+      <Navbar collapseOnSelect expand="lg" fixed="top" className="custom-nav sticky rounded-4 mx-lg-5">
         <Container>
-          <Navbar.Brand className="navbar-brand logo" to="/home">
+          <Navbar.Brand className="logo" to="/home">
             <img src={logoDark} alt="Logo" className="img-fluid logo-dark" />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
-            <Nav className="ml-auto">
+          <Navbar.Toggle aria-controls="navbarCollapse" />
+          <Navbar.Collapse className="justify-content-end" id="navbarCollapse">
+            <Nav className="ml-auto rounded-4">
               <NavLink to="/home" className="nav-link">
                 Intro
               </NavLink>
@@ -33,6 +33,9 @@ function MyNavbar() {
               <NavLink to="/experience" className="nav-link">
                 Experience
               </NavLink>
+              <a className="nav-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1RH9ucndnpiOXXYOIFcv9s2wUNfQui2Qr/view?usp=drive_link">
+                Resume
+              </a>
               <NavLink to="/contact" className="nav-link">
                 Contact Me
               </NavLink>

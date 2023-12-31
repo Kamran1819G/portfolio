@@ -1,4 +1,5 @@
 import React from 'react'
+import './Footer.scss'
 import { Container, Row, Col } from 'react-bootstrap'
 
 function Footer() {
@@ -8,12 +9,17 @@ function Footer() {
       <Container>
         <Row className="pt-4 pb-4">
           <Col lg={12} className="d-flex justify-content-between">
-            <div className="float-left float_none mt-2 mb-2">
+            <div className="float-left float_none my-2 ">
               <p className="copy-rights text-muted mb-0">
-                Made with 💖 by Kamran Khan..
+                @2022 Kamran Khan
               </p>
             </div>
-            <div className="float-right float_none mt-2 mb-2">
+            <div className="my-2">
+              <p >
+                Tech Stack Used: ReactJS | Bootstrap | React-Router | Github | Vercel
+              </p>
+            </div>
+            <div className="float-right float_none my-2">
               <ul className="list-inline fot_social mb-0">
                 <li className="list-inline-item">
                   <a

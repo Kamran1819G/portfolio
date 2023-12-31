@@ -85,22 +85,22 @@ function Home() {
           <Container>
             <Row className="justify-content-around">
               <Col lg={6}>
-                <div className="stage">Introduction</div>
-                <h1 className="main_title fw-bolder display-2">
+                <div className="stage">Introduction 👋</div>
+                <h1 className="title fw-bolder display-2">
                   <span data-aos="zoom-in-up" data-aos-delay="150">
-                    Hello, my
+                    Hello,
                   </span>
                   <span data-aos="zoom-in-up" data-aos-delay="200">
-                    name's Kamran Khan.
+                    I'm Kamran Khan.
                   </span>
                   <span data-aos="zoom-in-up" data-aos-delay="250">
-                    I'm a Software
+                    a Software
                   </span>
                   <span data-aos="zoom-in-up" data-aos-delay="300">
                     Engineer.
                   </span>
                 </h1>
-                <a className="scroll " href="#skill">
+                <a className="scroll " href="#projects-section">
                   <div className="scroll_icon">
                     <img className="scroll_pic" src={Scroll} alt="scroll" />
                   </div>
@@ -122,10 +122,10 @@ function Home() {
             </Row>
           </Container>
       </section>
-      <section className="project-section my-5 py-5">
+      <section className="my-5 py-5" id="projects-section">
         <Container>
           <Row>
-            <div className="stage">Projects</div>
+            <div className="stage">Projects 👨🏻‍💻</div>
             <h1 className="fw-bolder display-2">
               <span data-aos="zoom-in-up" data-aos-delay="150">
                 Some things
@@ -233,7 +233,7 @@ function Home() {
       <section className="skill-section my-5 py-5">
         <Container>
         <Row>
-            <div className="stage">skills</div>
+            <div className="stage">skills 🧠</div>
             <h1 className="fw-bolder display-2">
               <span data-aos="zoom-in-up" data-aos-delay="150">
                 Skills that

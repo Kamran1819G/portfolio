@@ -1,4 +1,3 @@
-/* Home CSS*/
 .main {
   position: relative;
 }
@@ -20,18 +19,15 @@
   height: 2px;
   background: var(--secondary-color);
 }
-.main_title {
-  perspective: 400px;
-  transform-style: preserve-3d;
-}
+
 @media only screen and (max-width: 767px) {
-  .main_title {
+  .title {
     font-size: 32px;
     line-height: 1.5;
     letter-spacing: -0.15px;
   }
 }
-.main_title span {
+.title span {
   display: block;
 }
 
@@ -83,15 +79,6 @@
   grid-row: 1;
   width: 60%;
   height: 60%;
-}
-
-.project-section {
-  margin-top: 10rem;
-  overflow-y: visible;
-
-  @media (max-width: 768px) {
-    margin-top: 1rem;
-  }
 }
 
 .slick-list {
