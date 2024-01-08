@@ -47,18 +47,16 @@
 
     .project-card-links {
       display: flex;
-      justify-content: space-between;
-      margin-top: 30px;
+      justify-content: space-evenly;
       font-family: "Poppins", sans-serif;
 
       .btn-live-view {
-        border-radius: 13px;
         margin-left: 5px;
         width: 100%;
       }
 
       .btn-source-code {
-        border-radius: 13px;
+        width: 60%;
       }
     }
   }
