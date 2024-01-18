@@ -15,6 +15,9 @@ import Scroll from "../assets/SVGs/scroll.svg";
 import Avatar from "../assets/SVGs/Avatar.svg";
 import laptop from "../assets/SVGs/laptop.svg";
 import ContactSection from "../components/home/ContactSection";
+import GitHubCalendar from "react-github-calendar";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 
 function NextArrow(props) {
   const { onClick } = props;
@@ -79,6 +82,11 @@ function Home() {
       },
     ],
   };
+
+  const GitHubColorScheme = {
+    light: ["#f2eff7", "#d8cfe7", "#beb0d8", "#a492c8", "#8a75b8"],
+  };
+
   return (
     <>
       <section className="vh-100 my-5 py-5">
@@ -242,6 +250,42 @@ function Home() {
                 techStack={["html", "css", "javascript"]}
               />
             </Slider>
+          </div>
+        </Container>
+      </section>
+      <section
+        className="my-5 py-5"
+        id="contribution-section"
+      >
+        <Container>
+          <Row>
+            <div className="stage">Open Source 👨🏻‍💻</div>
+            <h1 className="fw-bolder display-2">
+              <span data-aos="zoom-in-up" data-aos-delay="150">
+                My Contributions
+              </span>
+            </h1>
+          </Row>
+          <div className="my-5">
+            <GitHubCalendar
+              username="Kamran1819G"
+              theme={GitHubColorScheme}
+              fontSize={16}
+              blockSize={20}
+              blockRadius={5}
+              year="last"
+              colorScheme="light"
+              renderBlock={(block, activity) =>
+                React.cloneElement(block, {
+                  "data-tooltip-id": "react-tooltip",
+                  "data-tooltip-html": `${activity.count} activities on ${activity.date}`,
+                })
+              }
+              labels={{
+                totalCount: "{{count}} contributions in the last year",
+              }}
+            />
+            <ReactTooltip id="react-tooltip" />
           </div>
         </Container>
       </section>
