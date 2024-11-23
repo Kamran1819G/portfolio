@@ -5,8 +5,9 @@ import Link from "next/link";
 import styles from "./style.module.scss";
 import { perspective, slideIn } from "./anim";
 import { motion } from "framer-motion";
+import { useResumeLink } from "@/hooks/useResumeLink";
 
-const links = [
+const baseLinks = [
   {
     title: "Home",
     href: "/",
@@ -14,10 +15,6 @@ const links = [
   {
     title: "Educations",
     href: "/education",
-  },
-  {
-    title: "Resume",
-    href: "/",
   },
   {
     title: "Contact",
@@ -45,6 +42,18 @@ const footerLinks = [
 ];
 
 export default function Nav() {
+  const { resumeLink, loading, error } = useResumeLink();
+
+  // Combine base links with dynamic resume link
+  const links = [
+    ...baseLinks.slice(0, 2),
+    {
+      title: "Resume",
+      href: loading ? "/" : resumeLink,
+    },
+    ...baseLinks.slice(2),
+  ];
+
   return (
     <div className={styles.nav}>
       <div className={styles.body}>
