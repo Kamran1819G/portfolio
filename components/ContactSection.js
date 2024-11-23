@@ -8,12 +8,14 @@ import {
   Instagram,
   Mail,
   Check,
+  Loader2,
 } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 import Avatar from "@/assets/SVGs/Avatar2.svg";
 import WIFI from "@/assets/SVGs/wifi.svg";
@@ -29,7 +31,7 @@ const SocialLink = ({ href, icon: Icon, color }) => (
   </a>
 );
 
-const Toast = ({ message }) => (
+const Toast = ({ message, type = "success" }) => (
   <motion.div
     initial={{ opacity: 0, y: -100, scale: 0.6 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -46,9 +48,15 @@ const Toast = ({ message }) => (
           damping: 20,
           delay: 0.1,
         }}
-        className="flex items-center justify-center w-6 h-6 rounded-full bg-green-100"
+        className={`flex items-center justify-center w-6 h-6 rounded-full ${
+          type === "success" ? "bg-green-100" : "bg-red-100"
+        }`}
       >
-        <Check className="w-4 h-4 text-green-600" />
+        <Check
+          className={`w-4 h-4 ${
+            type === "success" ? "text-green-600" : "text-red-600"
+          }`}
+        />
       </motion.div>
       <p className="text-gray-700 font-medium">{message}</p>
     </div>
@@ -56,7 +64,9 @@ const Toast = ({ message }) => (
       initial={{ scaleX: 0 }}
       animate={{ scaleX: 1 }}
       transition={{ duration: 3 }}
-      className="h-1 bg-green-500 origin-left"
+      className={`h-1 origin-left ${
+        type === "success" ? "bg-green-500" : "bg-red-500"
+      }`}
     />
   </motion.div>
 );
@@ -68,13 +78,22 @@ const InputWrapper = ({ children }) => (
   </div>
 );
 
+const validateEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
 export default function ContactSection() {
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -82,18 +101,67 @@ export default function ContactSection() {
       ...prev,
       [name]: value,
     }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const showToastMessage = (message, type = "success") => {
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted", formData);
-      setShowToast(true);
+      const docRef = await addDoc(collection(db, "contacts"), {
+        ...formData,
+        timestamp: serverTimestamp(),
+        status: "unread",
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+      showToastMessage("Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });
-      setTimeout(() => setShowToast(false), 3000);
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error("Error adding document: ", error);
+      showToastMessage("Failed to send message. Please try again.", "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -128,7 +196,7 @@ export default function ContactSection() {
   return (
     <section className="py-10 bg-gray-50 relative" id="contact">
       <AnimatePresence>
-        {showToast && <Toast message="Message sent successfully!" />}
+        {showToast && <Toast message={toastMessage} type={toastType} />}
       </AnimatePresence>
 
       <div className="container mx-auto px-4">
@@ -153,11 +221,17 @@ export default function ContactSection() {
                           name="name"
                           value={formData.name}
                           onChange={handleInputChange}
-                          className="peer w-full px-4 py-3 bg-gray-50/50 rounded-xl focus:outline-none focus:bg-white transition-colors"
+                          className={`peer w-full px-4 py-3 bg-gray-50/50 rounded-xl focus:outline-none focus:bg-white transition-colors ${
+                            errors.name ? "border-red-500" : ""
+                          }`}
                           placeholder="Enter your name"
-                          required
                         />
                       </InputWrapper>
+                      {errors.name && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.name}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -170,11 +244,17 @@ export default function ContactSection() {
                           type="email"
                           value={formData.email}
                           onChange={handleInputChange}
-                          className="peer w-full px-4 py-3 bg-gray-50/50 rounded-xl focus:outline-none focus:bg-white transition-colors"
+                          className={`peer w-full px-4 py-3 bg-gray-50/50 rounded-xl focus:outline-none focus:bg-white transition-colors ${
+                            errors.email ? "border-red-500" : ""
+                          }`}
                           placeholder="Enter your email"
-                          required
                         />
                       </InputWrapper>
+                      {errors.email && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -186,12 +266,18 @@ export default function ContactSection() {
                           name="message"
                           value={formData.message}
                           onChange={handleInputChange}
-                          className="peer w-full px-4 py-3 bg-gray-50/50 rounded-xl focus:outline-none focus:bg-white transition-colors resize-none"
+                          className={`peer w-full px-4 py-3 bg-gray-50/50 rounded-xl focus:outline-none focus:bg-white transition-colors resize-none ${
+                            errors.message ? "border-red-500" : ""
+                          }`}
                           placeholder="Enter your message"
                           rows={4}
-                          required
                         />
                       </InputWrapper>
+                      {errors.message && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.message}
+                        </p>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-between pt-4">
@@ -203,9 +289,19 @@ export default function ContactSection() {
 
                       <Button
                         type="submit"
-                        className="relative overflow-hidden group hover:text-white"
+                        disabled={isSubmitting}
+                        className="relative overflow-hidden group hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        <span className="relative z-10">Send Message</span>
+                        <span className="relative z-10 flex items-center gap-2">
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            "Send Message"
+                          )}
+                        </span>
                         <div className="absolute inset-0 bg-blue-600 transform translate-y-full transition-transform group-hover:translate-y-0" />
                       </Button>
                     </div>
