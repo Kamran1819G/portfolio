@@ -10,6 +10,8 @@ import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Phone, Instagram, Linkedin, Twitter } from "lucide-react";
 import SocialFeedSection from "@/components/SocialFeedSection";
+import Link from "next/link";
+import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpg";
 
 const TechnologiesSection = () => {
   const [technologies, setTechnologies] = useState([]);
@@ -218,30 +220,53 @@ export default function Home() {
                   </button>
                   <div className="flex items-center gap-4 px-6 py-3 rounded-full border border-gray-300">
                     <div className="flex gap-4 text-gray-500">
-                      <Phone
-                        size={20}
-                        className="hover:text-gray-700 cursor-pointer transition-colors"
-                      />
-                      <Instagram
-                        size={20}
-                        className="hover:text-gray-700 cursor-pointer transition-colors"
-                      />
-                      <Linkedin
-                        size={20}
-                        className="hover:text-gray-700 cursor-pointer transition-colors"
-                      />
-                      <Twitter
-                        size={20}
-                        className="hover:text-gray-700 cursor-pointer transition-colors"
-                      />
+                      <Link href="tel:+918097905879">
+                        <Phone
+                          size={20}
+                          className="hover:text-gray-700 cursor-pointer transition-colors"
+                        />
+                      </Link>
+                      <Link
+                        href="https://instagram.com/kamran1819g"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Instagram
+                          size={20}
+                          className="hover:text-gray-700 cursor-pointer transition-colors"
+                        />
+                      </Link>
+                      <Link
+                        href="https://linkedin.com/in/kamran1819g"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Linkedin
+                          size={20}
+                          className="hover:text-gray-700 cursor-pointer transition-colors"
+                        />
+                      </Link>
+                      <Link
+                        href="https://twitter.com/kamran1819g"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Twitter
+                          size={20}
+                          className="hover:text-gray-700 cursor-pointer transition-colors"
+                        />
+                      </Link>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="md:w-1/2">
-                <img
-                  src="/api/placeholder/600/400"
-                  alt="Computer classroom with students"
+                <Image
+                  src={ProfessionalImage}
+                  alt="Professional Image"
+                  layout="responsive"
+                  width={600}
+                  height={400}
                   className="w-full h-full object-cover"
                 />
               </div>

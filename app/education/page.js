@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
+import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpg";
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex flex-col items-center justify-center gap-4">
@@ -333,9 +335,12 @@ export default function Education() {
                   </div>
                 </div>
                 <div className="md:w-1/2">
-                  <img
-                    src="/api/placeholder/600/400"
-                    alt="Educational collaboration"
+                  <Image
+                    src={ProfessionalImage}
+                    alt="Professional Image"
+                    layout="responsive"
+                    width={600}
+                    height={400}
                     className="w-full h-full object-cover"
                   />
                 </div>
