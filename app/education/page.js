@@ -18,6 +18,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpg";
+import Link from "next/link";
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex flex-col items-center justify-center gap-4">
@@ -329,9 +330,12 @@ export default function Education() {
                     impactful learning experiences.
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300">
+                    <Link
+                      href={"/contact"}
+                      className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300"
+                    >
                       Get in Touch
-                    </button>
+                    </Link>
                   </div>
                 </div>
                 <div className="md:w-1/2">

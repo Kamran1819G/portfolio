@@ -215,9 +215,12 @@ export default function Home() {
                   I have helped hundreds of clients with their software needs.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300">
+                  <Link
+                    href={"/contact"}
+                    className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300"
+                  >
                     Connect
-                  </button>
+                  </Link>
                   <div className="flex items-center gap-4 px-6 py-3 rounded-full border border-gray-300">
                     <div className="flex gap-4 text-gray-500">
                       <Link href="tel:+918097905879">
@@ -274,8 +277,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <ContactSection />
     </main>
   );
 }
