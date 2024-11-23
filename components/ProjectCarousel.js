@@ -97,7 +97,7 @@ const ProjectCard = ({ project }) => {
           <Button size="sm" className="flex items-center gap-1" asChild>
             <a href={deployLink} target="_blank" rel="noreferrer">
               <ExternalLink className="h-4 w-4" />
-              Demo
+              Live
             </a>
           </Button>
         )}
