@@ -6,8 +6,9 @@ import ContactSection from "@/components/ContactSection";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import ContributionGraph from "@/components/ContributionGraph";
 import Scroll from "@/assets/SVGs/scroll.svg";
-import { db } from "@/lib/firebase";
+import { db, storage } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 import { Phone, Instagram, Linkedin, Twitter } from "lucide-react";
 import SocialFeedSection from "@/components/SocialFeedSection";
 import Link from "next/link";
@@ -17,6 +18,7 @@ const TechnologiesSection = () => {
   const [technologies, setTechnologies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [iconUrls, setIconUrls] = useState({});
 
   useEffect(() => {
     const fetchTechnologies = async () => {
@@ -28,6 +30,24 @@ const TechnologiesSection = () => {
           ...doc.data(),
         }));
         setTechnologies(techList);
+
+        // Fetch icons from Firebase Storage
+        const urlsObject = {};
+
+        await Promise.all(
+          techList.map(async (tech) => {
+            if (tech.iconPath) {
+              try {
+                const url = await getDownloadURL(ref(storage, tech.iconPath));
+                urlsObject[tech.id] = url;
+              } catch (error) {
+                console.error(`Error fetching icon for ${tech.name}:`, error);
+              }
+            }
+          })
+        );
+
+        setIconUrls(urlsObject);
         setError(null);
       } catch (error) {
         console.error("Error fetching technologies:", error);
@@ -85,11 +105,13 @@ const TechnologiesSection = () => {
               key={tech.id}
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
             >
-              <img
-                src={tech.iconUrl}
-                alt={`${tech.name} icon`}
-                className="w-5 h-5 object-contain"
-              />
+              {iconUrls[tech.id] && (
+                <img
+                  src={iconUrls[tech.id]}
+                  alt={`${tech.name} icon`}
+                  className="w-5 h-5 object-contain"
+                />
+              )}
               <span className="text-gray-700 whitespace-nowrap">
                 {tech.name}
               </span>
@@ -102,32 +124,6 @@ const TechnologiesSection = () => {
 };
 
 export default function Home() {
-  /*
-
-  const [technologies, setTechnologies] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTechnologies = async () => {
-      try {
-        const techCollection = collection(db, 'technologies');
-        const techSnapshot = await getDocs(techCollection);
-        const techList = techSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setTechnologies(techList);
-      } catch (error) {
-        console.error("Error fetching technologies:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTechnologies();
-  }, []);
-  */
-
   return (
     <main className="min-h-screen w-full">
       {/* Hero Section */}

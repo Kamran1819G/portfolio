@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Keyboard, EffectCreative } from "swiper/modules";
 import { collection, getDocs } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { db } from "@/lib/firebase";
 import { Clock, ExternalLink, Github, Code } from "lucide-react";
 import { motion } from "framer-motion";
@@ -21,12 +22,51 @@ import "swiper/css";
 import "swiper/css/effect-creative";
 
 const ProjectCard = ({ project }) => {
+  const [imageUrl, setImageUrl] = useState(null);
+  const [techIcons, setTechIcons] = useState({});
+
+  useEffect(() => {
+    const storage = getStorage();
+
+    // Fetch main project image
+    const fetchMainImage = async () => {
+      if (project.imagePath) {
+        try {
+          const url = await getDownloadURL(ref(storage, project.imagePath));
+          setImageUrl(url);
+        } catch (error) {
+          console.error("Error fetching main image:", error);
+        }
+      }
+    };
+
+    // Fetch technology icons
+    const fetchTechIcons = async () => {
+      const icons = {};
+      if (project.technologies) {
+        for (const tech of project.technologies) {
+          if (tech.iconPath) {
+            try {
+              const url = await getDownloadURL(ref(storage, tech.iconPath));
+              icons[tech.iconPath] = url;
+            } catch (error) {
+              console.error(`Error fetching icon for ${tech.name}:`, error);
+            }
+          }
+        }
+        setTechIcons(icons);
+      }
+    };
+
+    fetchMainImage();
+    fetchTechIcons();
+  }, [project]);
+
   if (!project) return null;
 
   const {
     title,
     description,
-    image,
     technologies,
     sourceCodeLink,
     deployLink,
@@ -36,8 +76,12 @@ const ProjectCard = ({ project }) => {
   return (
     <Card className="w-full max-w-sm mx-auto h-full bg-white overflow-hidden">
       <div className="h-48 w-full bg-gray-100">
-        {image ? (
-          <img className="w-full h-full object-cover" src={image} alt={title} />
+        {imageUrl ? (
+          <img
+            className="w-full h-full object-cover"
+            src={imageUrl}
+            alt={title}
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <span className="text-gray-400">No image available</span>
@@ -61,11 +105,11 @@ const ProjectCard = ({ project }) => {
                 backgroundColor: tech.color || "#c9fd74",
                 color: tech.color ? "#fff" : "#000",
               }}
-              className=" text-white rounded-full px-2 flex items-center gap-1"
+              className="text-white rounded-full px-2 flex items-center gap-1"
             >
-              {tech.icon && (
+              {tech.iconPath && techIcons[tech.iconPath] && (
                 <img
-                  src={tech.icon}
+                  src={techIcons[tech.iconPath]}
                   alt={tech.name}
                   className="w-3 h-3 mr-1 object-contain"
                 />
@@ -139,12 +183,17 @@ const ProjectCarousel = () => {
         console.log("Fetching projects...");
         const projectsRef = collection(db, "projects");
         const querySnapshot = await getDocs(projectsRef);
-        const projectData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log("Fetched projects:", projectData);
-        setProjects(projectData);
+
+        const processedProjects = querySnapshot.docs.map((doc) => {
+          const projectData = doc.data();
+          return {
+            id: doc.id,
+            ...projectData,
+          };
+        });
+
+        console.log("Fetched projects:", processedProjects);
+        setProjects(processedProjects);
       } catch (err) {
         console.error("Error fetching projects:", err);
         setError("Failed to load projects. Please try again later.");
