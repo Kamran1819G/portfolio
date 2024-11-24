@@ -3,25 +3,33 @@
 import React from "react";
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { collection, query, getDocs, limit } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  getDocs,
+  doc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
+import { ref, getBlob } from "firebase/storage";
+import { db, storage } from "@/lib/firebase";
 import Link from "next/link";
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
+import MarkdownComponents from "@/components/MarkdownComponents";
+import remarkGfm from "remark-gfm";
 import {
   Calendar,
   Clock,
-  Tag,
   User,
   ChevronLeft,
   Share2,
-  Bookmark,
-  ExternalLink,
   Volume2,
   VolumeX,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -31,18 +39,28 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import ShareButton from "@/components/ShareButton";
 
-// Previous helper functions remain the same
-function createSlug(title) {
+const createSlug = (title) => {
   return title
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .trim();
-}
+};
 
-function formatDate(timestamp) {
+const stripMarkdown = (markdown) => {
+  return markdown
+    .replace(/```[\s\S]*?```/g, "") // Remove code blocks
+    .replace(/!\[.*?\]\(.*?\)/g, "") // Remove image links
+    .replace(/\[.*?\]\(.*?\)/g, "") // Remove regular links
+    .replace(/[*_~`>#-]+/g, "") // Remove Markdown syntax
+    .replace(/\n{2,}/g, "\n") // Replace multiple newlines with a single newline
+    .trim();
+};
+
+const formatDate = (timestamp) => {
   if (!timestamp) return "No date";
   try {
     if (timestamp?.toDate) {
@@ -62,16 +80,32 @@ function formatDate(timestamp) {
   } catch (error) {
     return "No date";
   }
-}
+};
 
-function calculateReadTime(content) {
+const calculateReadTime = (content) => {
   if (!content) return 1;
   const wordsPerMinute = 200;
   const wordCount = content.split(/\s+/).length;
   return Math.max(1, Math.ceil(wordCount / wordsPerMinute));
-}
+};
 
-// Loading skeleton component remains the same
+const fetchMarkdownContent = async (storagePath) => {
+  if (!storagePath) return null;
+
+  try {
+    const storageRef = ref(storage, storagePath);
+
+    // Use getBlob instead of direct fetch
+    const blob = await getBlob(storageRef);
+    const text = await blob.text();
+    return text;
+  } catch (error) {
+    console.error("Error fetching markdown from storage:", error);
+    return null;
+  }
+};
+
+// BlogSkeleton component remains the same
 const BlogSkeleton = () => (
   <div className="space-y-8">
     <div className="h-[400px] w-full bg-gray-200 rounded-2xl animate-pulse" />
@@ -96,19 +130,19 @@ export default function BlogPost() {
   const params = useParams();
   const router = useRouter();
   const [post, setPost] = useState(null);
+  const [markdownContent, setMarkdownContent] = useState("");
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speechSynthesis, setSpeechSynthesis] = useState(null);
+  const [shareCount, setShareCount] = useState(0);
 
   useEffect(() => {
-    // Initialize speech synthesis
     if (typeof window !== "undefined") {
       setSpeechSynthesis(window.speechSynthesis);
     }
 
-    // Cleanup function to stop speech when component unmounts
     return () => {
       if (speechSynthesis) {
         speechSynthesis.cancel();
@@ -116,7 +150,6 @@ export default function BlogPost() {
     };
   }, []);
 
-  // Previous useEffect for fetching post remains the same
   useEffect(() => {
     async function fetchPost() {
       if (!params?.slug) {
@@ -127,7 +160,7 @@ export default function BlogPost() {
 
       try {
         const blogsRef = collection(db, "blogs");
-        const querySnapshot = await getDocs(blogsRef);
+        const querySnapshot = await getDocs(query(blogsRef));
         let foundPost = null;
         const allPosts = [];
 
@@ -141,6 +174,7 @@ export default function BlogPost() {
             imageUrl: data.imageUrl || "/api/placeholder/1200/600",
             author: data.author || "Anonymous",
             category: data.category || "Uncategorized",
+            shareCount: data.shareCount || 0,
           };
 
           allPosts.push(postData);
@@ -152,6 +186,35 @@ export default function BlogPost() {
 
         if (foundPost) {
           setPost(foundPost);
+          setShareCount(foundPost.shareCount);
+
+          // Handle content with better error handling
+          let content = foundPost.content || "";
+
+          if (foundPost.storagePath) {
+            // Now using storagePath instead of contentLink
+            try {
+              const markdownContent = await fetchMarkdownContent(
+                foundPost.storagePath
+              );
+              if (markdownContent) {
+                content = markdownContent;
+              } else {
+                console.warn(
+                  "Failed to fetch markdown content, falling back to default content"
+                );
+              }
+            } catch (contentError) {
+              console.error("Error fetching markdown content:", contentError);
+              setError(
+                "Failed to load article content. Falling back to default content."
+              );
+            }
+          }
+
+          setMarkdownContent(content);
+
+          // Handle related posts
           const related = allPosts
             .filter(
               (p) => p.category === foundPost.category && p.id !== foundPost.id
@@ -163,7 +226,7 @@ export default function BlogPost() {
         }
       } catch (error) {
         console.error("Error fetching post:", error);
-        setError(error.message);
+        setError(error.message || "Failed to load post");
       } finally {
         setLoading(false);
       }
@@ -172,14 +235,28 @@ export default function BlogPost() {
     fetchPost();
   }, [params?.slug, router]);
 
+  const incrementShareCount = async (postId) => {
+    try {
+      const postRef = doc(db, "blogs", postId);
+      await updateDoc(postRef, {
+        shareCount: increment(1),
+      });
+      setShareCount((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error updating share count:", error);
+    }
+  };
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: post.title,
-          text: post.excerpt,
+          title: post?.title || "",
+          text: post?.excerpt || "",
           url: window.location.href,
         });
+        // Increment share count after successful share
+        await incrementShareCount(post.id);
       } catch (err) {
         console.error("Error sharing:", err);
       }
@@ -187,20 +264,24 @@ export default function BlogPost() {
   };
 
   const handleListen = useCallback(() => {
-    if (!speechSynthesis) return;
+    if (!speechSynthesis || !post) return;
 
     if (isPlaying) {
       speechSynthesis.cancel();
       setIsPlaying(false);
     } else {
       const utterance = new SpeechSynthesisUtterance();
-      utterance.text = `${post.title}. ${post.content}`;
+      utterance.lang = "en-IN";
+      utterance.pitch = 0.5;
+      utterance.rate = 1.25;
+      const cleanedContent = stripMarkdown(markdownContent);
+      utterance.text = cleanedContent;
       utterance.onend = () => setIsPlaying(false);
       utterance.onerror = () => setIsPlaying(false);
       speechSynthesis.speak(utterance);
       setIsPlaying(true);
     }
-  }, [isPlaying, post, speechSynthesis]);
+  }, [isPlaying, post, markdownContent, speechSynthesis]);
 
   if (loading) {
     return (
@@ -295,15 +376,7 @@ export default function BlogPost() {
             </div>
 
             <div className="flex gap-4 mb-8">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleShare}
-                className="gap-2 rounded-full"
-              >
-                <Share2 className="h-4 w-4" />
-                Share
-              </Button>
+              <ShareButton shareCount={post.shareCount} onShare={handleShare} />
               <Button
                 variant="outline"
                 size="sm"
@@ -320,9 +393,12 @@ export default function BlogPost() {
             </div>
 
             <div className="prose prose-gray max-w-none">
-              {post.content.split("\n").map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={MarkdownComponents}
+              >
+                {markdownContent || post.content || "No content available."}
+              </ReactMarkdown>
             </div>
           </CardContent>
         </Card>
