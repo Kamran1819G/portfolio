@@ -4,8 +4,9 @@ import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase";
+import { db, storage } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
 import {
   Loader2,
   ExternalLink,
@@ -19,6 +20,19 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpg";
 import Link from "next/link";
+
+// Helper function to fetch image from Firebase Storage
+const fetchImageFromPath = async (imagePath) => {
+  try {
+    if (!imagePath) return null;
+    const imageRef = ref(storage, imagePath);
+    const url = await getDownloadURL(imageRef);
+    return url;
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    return null;
+  }
+};
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex flex-col items-center justify-center gap-4">
@@ -66,8 +80,58 @@ const SectionTitle = ({ badge, title, subtitle }) => (
   </div>
 );
 
+const ImageComponent = ({ imagePath, alt, className }) => {
+  const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadImage = async () => {
+      setLoading(true);
+      try {
+        const url = await fetchImageFromPath(imagePath);
+        if (url) {
+          setImageUrl(url);
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (imagePath) {
+      loadImage();
+    }
+  }, [imagePath]);
+
+  if (loading) {
+    return (
+      <div
+        className={`${className} flex items-center justify-center bg-gray-100`}
+      >
+        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
+
+  if (error || !imageUrl) {
+    return (
+      <div
+        className={`${className} flex items-center justify-center bg-gray-100`}
+      >
+        <GraduationCap className="h-8 w-8 text-gray-400" />
+      </div>
+    );
+  }
+
+  return (
+    <motion.img src={imageUrl} alt={alt} className={className} loading="lazy" />
+  );
+};
+
 const EducationCard = ({
-  img,
+  imagePath,
   imgAlt,
   CollegeName,
   education,
@@ -88,21 +152,17 @@ const EducationCard = ({
     >
       <Card className="bg-white overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
         <div className="md:flex">
-          {/* Image Container */}
           <div className="md:w-2/5 relative overflow-hidden h-64 md:h-auto">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-60 group-hover:opacity-0 transition-opacity duration-500" />
-            <motion.img
-              className="w-full h-full object-contain object-center transform transition-transform duration-700 group-hover:scale-110"
-              src={img}
+            <ImageComponent
+              imagePath={imagePath}
               alt={imgAlt}
-              loading="lazy"
+              className="w-full h-full object-contain object-center transform transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
 
-          {/* Content Container */}
           <div className="md:w-3/5 p-6 md:p-8 relative">
-            {/* Year Badge - Updated positioning and styling */}
             <div className="absolute top-0 right-0 mt-2 mr-2">
               <div className="flex items-center gap-2 px-4 py-2 bg-white shadow-lg rounded-full whitespace-nowrap">
                 <Calendar className="h-4 w-4 text-primary flex-shrink-0" />
@@ -110,9 +170,7 @@ const EducationCard = ({
               </div>
             </div>
 
-            {/* Main Content */}
             <div className="space-y-6 mt-6">
-              {/* Header */}
               <div className="space-y-2">
                 <h2 className="text-2xl font-bold text-gray-900 group-hover:text-primary transition-colors duration-300">
                   {CollegeName}
@@ -127,10 +185,8 @@ const EducationCard = ({
                 </div>
               </div>
 
-              {/* Description */}
               <p className="text-gray-700 leading-relaxed">{description}</p>
 
-              {/* Achievements */}
               {achievements.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="font-semibold text-gray-900">
@@ -151,7 +207,6 @@ const EducationCard = ({
               )}
             </div>
 
-            {/* Learn More Link */}
             <div className="mt-6 flex items-center gap-2 text-primary font-medium group/link cursor-pointer">
               <span>Learn More</span>
               <ExternalLink className="h-4 w-4 transform transition-transform duration-300 group-hover/link:translate-x-1" />
@@ -163,46 +218,47 @@ const EducationCard = ({
   );
 };
 
-const CertificateCard = ({ certLink, certImg, certName, from, index }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
-    className="group"
-  >
-    <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300">
-      <a
-        href={certLink}
-        target="_blank"
-        rel="noreferrer"
-        className="block h-full"
-      >
-        <div className="relative aspect-video overflow-hidden">
-          <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
-          <motion.img
-            className="absolute w-full h-full object-fit object-center transition-transform duration-500 group-hover:scale-105"
-            src={certImg}
-            alt={certName}
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-        </div>
-
-        <CardContent className="p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-bold text-gray-800 group-hover:text-primary transition-colors duration-300">
-                {certName}
-              </h2>
-              <p className="text-gray-600 mt-1">{from}</p>
-            </div>
-            <ExternalLink className="h-5 w-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+const CertificateCard = ({ certLink, imagePath, certName, from, index }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="group"
+    >
+      <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300">
+        <a
+          href={certLink}
+          target="_blank"
+          rel="noreferrer"
+          className="block h-full"
+        >
+          <div className="relative aspect-video overflow-hidden">
+            <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
+            <ImageComponent
+              imagePath={imagePath}
+              alt={certName}
+              className="absolute w-full h-full object-fit object-center transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
-        </CardContent>
-      </a>
-    </Card>
-  </motion.div>
-);
+
+          <CardContent className="p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800 group-hover:text-primary transition-colors duration-300">
+                  {certName}
+                </h2>
+                <p className="text-gray-600 mt-1">{from}</p>
+              </div>
+              <ExternalLink className="h-5 w-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+          </CardContent>
+        </a>
+      </Card>
+    </motion.div>
+  );
+};
 
 export default function Education() {
   const [educations, setEducations] = useState([]);
@@ -224,11 +280,8 @@ export default function Education() {
             ...doc.data(),
           }))
           .sort((a, b) => {
-            // Extract the start year from the start date
             const startYearA = parseInt(a.startDate.split("-")[0]);
             const startYearB = parseInt(b.startDate.split("-")[0]);
-
-            // Sort in descending order (most recent first)
             return startYearB - startYearA;
           });
 
@@ -279,7 +332,7 @@ export default function Education() {
               {educations.map((edu, index) => (
                 <EducationCard
                   key={edu.id}
-                  img={edu.institutionLogo}
+                  imagePath={edu.institutionLogoPath}
                   imgAlt={edu.institution}
                   CollegeName={edu.institution}
                   education={edu.degree}
@@ -307,7 +360,7 @@ export default function Education() {
                 <CertificateCard
                   key={cert.id}
                   certLink={cert.certLink}
-                  certImg={cert.certImg}
+                  imagePath={cert.certImagePath}
                   certName={cert.certName}
                   from={cert.from}
                   index={index}
@@ -331,7 +384,7 @@ export default function Education() {
                   </p>
                   <div className="flex gap-4">
                     <Link
-                      href={"/contact"}
+                      href="/contact"
                       className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300"
                     >
                       Get in Touch
