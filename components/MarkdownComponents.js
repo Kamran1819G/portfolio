@@ -5,6 +5,15 @@ import Image from "next/image";
 import { Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Utility function to create slugs (matching the one in TableOfContents)
+const createSlug = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+$/, "");
+};
+
 // Code Copy Button Component
 const CopyButton = ({ code }) => {
   const [copied, setCopied] = React.useState(false);
@@ -24,8 +33,10 @@ const CopyButton = ({ code }) => {
     >
       {copied ? (
         <>
-          <Check className="h-4 w-4 text-green-500" />
-          <span className="text-green-500 mr-10">Copied!</span>
+          <Check className="h-4 w-4 text-emerald-500" />
+          <span className="text-emerald-500 text-sm font-medium mr-10">
+            Copied
+          </span>
         </>
       ) : (
         <Copy className="h-4 w-4 text-white" />
@@ -34,39 +45,95 @@ const CopyButton = ({ code }) => {
   );
 };
 
-// Enhanced Markdown Components
+const ImageWithLightbox = ({ src, alt }) => {
+  const [isZoomed, setIsZoomed] = React.useState(false);
+
+  return (
+    <div
+      className={cn(
+        "relative transition-all duration-300",
+        isZoomed && "fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+      )}
+      onClick={() => setIsZoomed(!isZoomed)}
+    >
+      <div
+        className={cn(
+          "relative h-[400px] rounded-xl overflow-hidden bg-muted",
+          isZoomed && "h-screen flex items-center justify-center p-8"
+        )}
+      >
+        <Image
+          src={src}
+          alt={alt || "Blog image"}
+          layout={isZoomed ? "fill" : "fill"}
+          objectFit="contain"
+          className={cn(
+            "transition-all duration-300",
+            !isZoomed && "hover:scale-105",
+            isZoomed && "cursor-zoom-out"
+          )}
+        />
+      </div>
+    </div>
+  );
+};
+
 export const MarkdownComponents = {
-  h1: ({ node, ...props }) => (
-    <h1
-      className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mt-12 mb-6 first:mt-0 text-primary"
-      {...props}
-    />
-  ),
+  h1: ({ node, children, ...props }) => {
+    const slug = createSlug(children);
+    return (
+      <h1
+        id={slug}
+        className="scroll-m-20 text-3xl font-bold tracking-tight lg:text-4xl mt-10 mb-4 first:mt-0 text-primary"
+        {...props}
+      >
+        {children}
+      </h1>
+    );
+  },
 
-  h2: ({ node, ...props }) => (
-    <h2
-      className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight mt-10 mb-4 text-primary"
-      {...props}
-    />
-  ),
+  h2: ({ node, children, ...props }) => {
+    const slug = createSlug(children);
+    return (
+      <h2
+        id={slug}
+        className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight mt-8 mb-4 text-primary"
+        {...props}
+      >
+        {children}
+      </h2>
+    );
+  },
 
-  h3: ({ node, ...props }) => (
-    <h3
-      className="scroll-m-20 text-2xl font-semibold tracking-tight mt-8 mb-4"
-      {...props}
-    />
-  ),
+  h3: ({ node, children, ...props }) => {
+    const slug = createSlug(children);
+    return (
+      <h3
+        id={slug}
+        className="scroll-m-20 text-xl font-semibold tracking-tight mt-6 mb-3"
+        {...props}
+      >
+        {children}
+      </h3>
+    );
+  },
 
-  h4: ({ node, ...props }) => (
-    <h4
-      className="scroll-m-20 text-xl font-semibold tracking-tight mt-6 mb-3"
-      {...props}
-    />
-  ),
+  h4: ({ node, children, ...props }) => {
+    const slug = createSlug(children);
+    return (
+      <h4
+        id={slug}
+        className="scroll-m-20 text-lg font-medium tracking-tight mt-4 mb-2"
+        {...props}
+      >
+        {children}
+      </h4>
+    );
+  },
 
   p: ({ node, ...props }) => (
     <p
-      className="leading-7 [&:not(:first-child)]:mt-6 text-lg text-muted-foreground"
+      className="leading-7 [&:not(:first-child)]:mt-4 text-base text-muted-foreground"
       {...props}
     />
   ),
@@ -81,20 +148,12 @@ export const MarkdownComponents = {
     />
   ),
 
-  img: ({ node, src, alt, ...props }) => (
-    <figure className="my-8">
-      <div className="relative h-[400px] rounded-xl overflow-hidden bg-muted">
-        <Image
-          src={src}
-          alt={alt || "Blog image"}
-          layout="fill"
-          objectFit="cover"
-          className="transition-transform duration-300 hover:scale-105"
-        />
-      </div>
-      {alt && (
+  img: ({ node, ...props }) => (
+    <figure className="my-6">
+      <ImageWithLightbox {...props} />
+      {props.alt && (
         <figcaption className="mt-2 text-center text-sm text-muted-foreground italic">
-          {alt}
+          {props.alt}
         </figcaption>
       )}
     </figure>
@@ -106,7 +165,7 @@ export const MarkdownComponents = {
 
     if (!inline && match) {
       return (
-        <div className="relative my-6 rounded-lg overflow-hidden">
+        <div className="relative my-4 rounded-lg overflow-hidden">
           <SyntaxHighlighter
             style={vscDarkPlus}
             language={match[1]}
@@ -114,7 +173,7 @@ export const MarkdownComponents = {
             customStyle={{
               margin: 0,
               borderRadius: "0.5rem",
-              padding: "1.5rem",
+              padding: "1.25rem",
             }}
             {...props}
           >
@@ -127,7 +186,7 @@ export const MarkdownComponents = {
 
     return (
       <code
-        className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-primary"
+        className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium text-primary"
         {...props}
       >
         {children}
@@ -137,31 +196,31 @@ export const MarkdownComponents = {
 
   ul: ({ node, ...props }) => (
     <ul
-      className="my-6 ml-6 list-disc [&>li]:mt-2 text-muted-foreground marker:text-primary"
+      className="my-4 ml-6 list-disc [&>li]:mt-1.5 text-muted-foreground marker:text-primary"
       {...props}
     />
   ),
 
   ol: ({ node, ...props }) => (
     <ol
-      className="my-6 ml-6 list-decimal [&>li]:mt-2 text-muted-foreground marker:text-primary"
+      className="my-4 ml-6 list-decimal [&>li]:mt-1.5 text-muted-foreground marker:text-primary"
       {...props}
     />
   ),
 
-  li: ({ node, ...props }) => <li className="text-lg leading-7" {...props} />,
+  li: ({ node, ...props }) => <li className="text-base leading-7" {...props} />,
 
   blockquote: ({ node, ...props }) => (
     <blockquote
-      className="mt-6 border-l-4 border-primary pl-6 italic text-xl text-muted-foreground"
+      className="mt-4 border-l-4 border-primary pl-6 italic text-lg text-muted-foreground"
       {...props}
     />
   ),
 
-  hr: ({ node, ...props }) => <hr className="my-8 border-muted" {...props} />,
+  hr: ({ node, ...props }) => <hr className="my-6 border-muted" {...props} />,
 
   table: ({ node, ...props }) => (
-    <div className="my-6 w-full overflow-y-auto">
+    <div className="my-4 w-full overflow-y-auto">
       <table className="w-full border-collapse text-sm" {...props} />
     </div>
   ),

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   collection,
@@ -22,8 +22,7 @@ import {
   Calendar,
   Clock,
   User,
-  ChevronLeft,
-  Share2,
+  ArrowLeft,
   Volume2,
   VolumeX,
 } from "lucide-react";
@@ -32,14 +31,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  TooltipProvider,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ShareButton from "@/components/ShareButton";
+import TableOfContents from "@/app/blog/TableOfContents";
 
 const createSlug = (title) => {
   return title
@@ -105,10 +99,9 @@ const fetchMarkdownContent = async (storagePath) => {
   }
 };
 
-// BlogSkeleton component remains the same
 const BlogSkeleton = () => (
-  <div className="space-y-8">
-    <div className="h-[400px] w-full bg-gray-200 rounded-2xl animate-pulse" />
+  <div className="max-w-4xl mx-auto space-y-8 px-4">
+    <div className="h-[500px] w-full bg-gray-200 rounded-2xl animate-pulse" />
     <div className="space-y-4">
       <Skeleton className="h-8 w-32" />
       <Skeleton className="h-12 w-3/4" />
@@ -118,13 +111,44 @@ const BlogSkeleton = () => (
         <Skeleton className="h-6 w-32" />
       </div>
       <div className="space-y-4">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} className="h-4 w-full" />
+        ))}
       </div>
     </div>
   </div>
 );
+
+const ProgressBar = () => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      setProgress(scrolled);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-1 z-50">
+      <div
+        className="h-full transition-all duration-200"
+        style={{
+          width: `${progress}%`,
+          background: `var(--primary-color)`,
+          transition: "width 0.3s ease-out",
+        }}
+      />
+    </div>
+  );
+};
 
 export default function BlogPost() {
   const params = useParams();
@@ -135,17 +159,23 @@ export default function BlogPost() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speechSynthesis, setSpeechSynthesis] = useState(null);
   const [shareCount, setShareCount] = useState(0);
 
+  // Create refs to store speech synthesis instances
+  const speechSynthesisRef = useRef(null);
+  const utteranceRef = useRef(null);
+
+  // Initialize speech synthesis
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setSpeechSynthesis(window.speechSynthesis);
+      speechSynthesisRef.current = window.speechSynthesis;
     }
 
+    // Enhanced cleanup function
     return () => {
-      if (speechSynthesis) {
-        speechSynthesis.cancel();
+      if (speechSynthesisRef.current) {
+        speechSynthesisRef.current.cancel();
+        setIsPlaying(false);
       }
     };
   }, []);
@@ -263,30 +293,55 @@ export default function BlogPost() {
     }
   };
 
+  // Add navigation event listener
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (speechSynthesisRef.current) {
+        speechSynthesisRef.current.cancel();
+        setIsPlaying(false);
+      }
+    };
+
+    // Add listener for navigation events
+    window.addEventListener("popstate", handleRouteChange);
+
+    return () => {
+      window.removeEventListener("popstate", handleRouteChange);
+      handleRouteChange(); // Clean up on unmount
+    };
+  }, []);
+
   const handleListen = useCallback(() => {
-    if (!speechSynthesis || !post) return;
+    if (!speechSynthesisRef.current || !post) return;
 
     if (isPlaying) {
-      speechSynthesis.cancel();
+      speechSynthesisRef.current.cancel();
       setIsPlaying(false);
     } else {
-      const utterance = new SpeechSynthesisUtterance();
-      utterance.lang = "en-IN";
-      utterance.pitch = 0.5;
-      utterance.rate = 1.25;
+      // Cancel any existing speech
+      speechSynthesisRef.current.cancel();
+
+      // Create new utterance
+      utteranceRef.current = new SpeechSynthesisUtterance();
+      utteranceRef.current.lang = "en-IN";
+      utteranceRef.current.pitch = 0.5;
+      utteranceRef.current.rate = 1.25;
+
       const cleanedContent = stripMarkdown(markdownContent);
-      utterance.text = cleanedContent;
-      utterance.onend = () => setIsPlaying(false);
-      utterance.onerror = () => setIsPlaying(false);
-      speechSynthesis.speak(utterance);
+      utteranceRef.current.text = cleanedContent;
+
+      utteranceRef.current.onend = () => setIsPlaying(false);
+      utteranceRef.current.onerror = () => setIsPlaying(false);
+
+      speechSynthesisRef.current.speak(utteranceRef.current);
       setIsPlaying(true);
     }
-  }, [isPlaying, post, markdownContent, speechSynthesis]);
+  }, [isPlaying, post, markdownContent]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-12">
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="container max-w-7xl">
           <BlogSkeleton />
         </div>
       </div>
@@ -295,12 +350,12 @@ export default function BlogPost() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-12">
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="container max-w-7xl px-4">
           <Button variant="ghost" asChild className="mb-8 hover:bg-gray-100">
             <Link href="/blog">
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              Back to Blog List
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Blog
             </Link>
           </Button>
           <Alert variant="destructive">
@@ -315,73 +370,68 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-12">
-        <Button variant="ghost" asChild className="mb-8 hover:bg-gray-100">
-          <Link href="/blog">
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Back to Blog List
-          </Link>
-        </Button>
+      <ProgressBar />
+      {/* Enhanced Hero Section */}
+      <div className="w-full h-[80vh] relative bg-black">
+        <Image
+          src={post.imageUrl}
+          alt={post.title}
+          layout="fill"
+          objectFit="cover"
+          priority
+          className="opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+        <div className="container max-w-7xl h-full relative">
+          <div className="absolute inset-x-4 bottom-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div className="flex-1">
+              <Button
+                variant="ghost"
+                asChild
+                className="mb-6 text-white hover:text-white"
+              >
+                <Link href="/blog">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to Blog
+                </Link>
+              </Button>
+              <Badge className="bg-white/20 text-white backdrop-blur-sm mb-4">
+                {post.category}
+              </Badge>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white max-w-4xl mb-6">
+                {post.title}
+              </h1>
 
-        <Card className="max-w-4xl mx-auto">
-          <div className="relative h-[400px] w-full rounded-t-xl overflow-hidden">
-            <Image
-              src={post.imageUrl}
-              alt={post.title}
-              layout="fill"
-              objectFit="cover"
-              priority
-              className="transition-transform duration-300 hover:scale-105"
-            />
-          </div>
-
-          <CardContent className="p-8">
-            <Badge
-              variant="secondary"
-              className="bg-gray-100 text-gray-700 rounded-full py-1 px-3 mb-4"
-            >
-              {post.category}
-            </Badge>
-
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-              {post.title}
-            </h1>
-
-            <div className="flex flex-wrap items-center gap-6 text-muted-foreground mb-8">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    <span>{post.author}</span>
-                  </TooltipTrigger>
-                  <TooltipContent>Author</TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <span>{formatDate(post.createdAt)}</span>
-                  </TooltipTrigger>
-                  <TooltipContent>Publication Date</TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    <span>{post.readTime} min read</span>
-                  </TooltipTrigger>
-                  <TooltipContent>Reading Time</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              {/* Metadata section moved to hero */}
+              <div className="flex flex-wrap items-center gap-6 text-white/80">
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  <span>{post.author}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  <span>{formatDate(post.createdAt)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  <span>{post.readTime} min read</span>
+                </div>
+              </div>
             </div>
 
-            <div className="flex gap-4 mb-8">
-              <ShareButton shareCount={post.shareCount} onShare={handleShare} />
+            {/* Action buttons moved to hero */}
+            <div className="flex items-center gap-4">
+              <ShareButton
+                shareCount={shareCount}
+                onShare={handleShare}
+                variant="ghost"
+                className="text-white hover:bg-white/10"
+              />
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={handleListen}
-                className="gap-2 rounded-full"
+                className="gap-2 rounded-full text-white hover:bg-white"
               >
                 {isPlaying ? (
                   <VolumeX className="h-4 w-4" />
@@ -391,44 +441,66 @@ export default function BlogPost() {
                 {isPlaying ? "Stop" : "Listen"}
               </Button>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div className="prose prose-gray max-w-none">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={MarkdownComponents}
-              >
-                {markdownContent || post.content || "No content available."}
-              </ReactMarkdown>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="container max-w-2/3 px-4 relative z-10 ">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Main Content */}
+          <article className="flex-1">
+            <Card className="overflow-hidden">
+              <CardContent className="p-8">
+                {/* Content */}
+                <div className="prose prose-gray max-w-none">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={MarkdownComponents}
+                  >
+                    {markdownContent || post.content || "No content available."}
+                  </ReactMarkdown>
+                </div>
+              </CardContent>
+            </Card>
+          </article>
 
+          {/* Table of Contents Sidebar */}
+          <TableOfContents content={markdownContent || post.content || ""} />
+        </div>
+
+        {/* Related Posts */}
         {relatedPosts.length > 0 && (
-          <div className="mt-16">
-            <h2 className="text-3xl font-bold mb-8">Related Articles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mt-16 mb-12">
+            <h2 className="text-2xl font-bold mb-8">Related Articles</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedPosts.map((relatedPost) => (
-                <Card key={relatedPost.id} className="overflow-hidden">
+                <Card key={relatedPost.id} className="overflow-hidden group">
                   <Link href={`/blog/${relatedPost.slug}`}>
-                    <div className="relative h-48">
+                    <div className="relative h-48 overflow-hidden">
                       <Image
                         src={relatedPost.imageUrl}
                         alt={relatedPost.title}
                         layout="fill"
                         objectFit="cover"
-                        className="transition-transform duration-300 hover:scale-105"
+                        className="transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
-                    <CardContent className="p-4">
-                      <Badge variant="secondary" className="mb-2">
+                    <CardContent className="p-6">
+                      <Badge variant="secondary" className="mb-3">
                         {relatedPost.category}
                       </Badge>
-                      <h3 className="font-bold text-xl mb-2 line-clamp-2">
+                      <h3 className="font-bold text-xl mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                         {relatedPost.title}
                       </h3>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span>{formatDate(relatedPost.createdAt)}</span>
-                        <span>{relatedPost.readTime} min read</span>
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          {formatDate(relatedPost.createdAt)}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          {relatedPost.readTime} min read
+                        </span>
                       </div>
                     </CardContent>
                   </Link>
