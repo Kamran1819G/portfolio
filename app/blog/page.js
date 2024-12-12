@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
+import { db, storage } from "@/lib/firebase";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -79,15 +80,29 @@ export default function Blogs() {
         const q = query(postsRef, orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
 
-        const fetchedPosts = querySnapshot.docs.map((doc) => {
+        // Fetch all post images in parallel
+        const postPromises = querySnapshot.docs.map(async (doc) => {
           const data = doc.data();
+
+          // Fetch image URL from Firebase Storage if imagePath exists
+          let imageUrl = "/api/placeholder/800/400"; // default placeholder
+          if (data.imagePath) {
+            try {
+              const imageRef = ref(storage, data.imagePath);
+              imageUrl = await getDownloadURL(imageRef);
+            } catch (imageError) {
+              console.error("Error fetching image:", imageError);
+              // Keep default placeholder if image fetch fails
+            }
+          }
+
           return {
             id: doc.id,
             ...data,
             slug: data.slug || createSlug(data.title),
             createdAt: data.createdAt,
             readTime: calculateReadTime(data.content),
-            imageUrl: data.imageUrl || "/api/placeholder/800/400",
+            imageUrl: imageUrl,
             author: data.author || "Anonymous",
             category: data.category || "Uncategorized",
             excerpt:
@@ -97,6 +112,9 @@ export default function Blogs() {
                 : "No content available"),
           };
         });
+
+        // Wait for all image URLs to be fetched
+        const fetchedPosts = await Promise.all(postPromises);
 
         const uniqueCategories = [
           ...new Set(fetchedPosts.map((post) => post.category)),
