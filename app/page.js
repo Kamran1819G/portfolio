@@ -12,7 +12,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { Phone, Instagram, Linkedin, Twitter } from "lucide-react";
 import SocialFeedSection from "@/components/SocialFeedSection";
 import Link from "next/link";
-import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpg";
+import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpeg";
 
 const TechnologiesSection = () => {
   const [technologies, setTechnologies] = useState([]);

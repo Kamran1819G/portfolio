@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
-import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpg";
+import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpeg";
 import Link from "next/link";
 
 // Helper function to fetch image from Firebase Storage
