@@ -40,8 +40,9 @@ const ShareButton = ({
       size="sm"
       onClick={handleShare}
       disabled={isLoading}
-      className={`group relative gap-2 rounded-full 
-        hover:bg-primary hover:text-primary-foreground 
+      className={`group relative gap-2 rounded-full
+        bg-transparent border-primary text-primary-500
+        hover:bg-primary-50 hover:border-primary-200 hover:text-primary-600
         active:scale-95 transition-all duration-200 
         ${showSuccess ? "bg-green-50 border-green-200" : ""} 
         ${className}`}

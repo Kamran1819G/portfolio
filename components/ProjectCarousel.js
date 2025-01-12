@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-creative";
+import { LinkPreview } from "./ui/link-preview";
 
 const ProjectCard = ({ project }) => {
   const [imageUrl, setImageUrl] = useState(null);
@@ -139,10 +140,10 @@ const ProjectCard = ({ project }) => {
 
         {deployLink && (
           <Button size="sm" className="flex items-center gap-1" asChild>
-            <a href={deployLink} target="_blank" rel="noreferrer">
+            <LinkPreview url={deployLink}>
               <ExternalLink className="h-4 w-4" />
               Live
-            </a>
+            </LinkPreview>
           </Button>
         )}
 
@@ -215,7 +216,7 @@ const ProjectCarousel = () => {
     <div className="relative px-4">
       <Swiper
         modules={[Autoplay, Keyboard, EffectCreative]}
-        autoplay={{ delay: 2500 }}
+        autoplay={{ delay: 5000 }}
         keyboard
         grabCursor={true}
         spaceBetween={24}

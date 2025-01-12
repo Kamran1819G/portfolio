@@ -25,6 +25,9 @@ import {
   ArrowLeft,
   Volume2,
   VolumeX,
+  Edit,
+  Save,
+  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -34,6 +37,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ShareButton from "@/components/ShareButton";
 import TableOfContents from "@/app/blog/TableOfContents";
+import PageTransition from "@/components/page-transition/PageTransition";
+import { useAuth } from "@/lib/contexts/AuthContext";
 
 const createSlug = (title) => {
   return title
@@ -155,11 +160,16 @@ export default function BlogPost() {
   const router = useRouter();
   const [post, setPost] = useState(null);
   const [markdownContent, setMarkdownContent] = useState("");
+  const [editedContent, setEditedContent] = useState(""); // New state for edited content
+  const [isEditing, setIsEditing] = useState(false); // Track editing mode
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [shareCount, setShareCount] = useState(0);
+
+  const { user } = useAuth();
 
   // Create refs to store speech synthesis instances
   const speechSynthesisRef = useRef(null);
@@ -243,7 +253,7 @@ export default function BlogPost() {
           }
 
           setMarkdownContent(content);
-
+          setEditedContent(content); // Set initial edited content
           // Handle related posts
           const related = allPosts
             .filter(
@@ -338,6 +348,45 @@ export default function BlogPost() {
     }
   }, [isPlaying, post, markdownContent]);
 
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedContent(markdownContent);
+  };
+
+  const handleSave = async () => {
+    if (updateLoading) return;
+    setUpdateLoading(true);
+    try {
+      const postRef = doc(db, "blogs", post.id);
+      // Check if the post has a storagePath. If yes update that content.
+      if (post.storagePath) {
+        // if it has a storagePath then upload the changed markdown content
+        const storageRef = ref(storage, post.storagePath);
+        const blob = new Blob([editedContent], { type: "text/plain" });
+
+        await storageRef.put(blob);
+      } else {
+        await updateDoc(postRef, { content: editedContent });
+      }
+
+      setMarkdownContent(editedContent);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating post:", error);
+      setError("Failed to save changes. Please try again.");
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
+  const handleContentChange = (e) => {
+    setEditedContent(e.target.value);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 py-12">
@@ -369,147 +418,191 @@ export default function BlogPost() {
   if (!post) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <ProgressBar />
-      {/* Enhanced Hero Section */}
-      <div className="w-full h-[80vh] relative bg-black">
-        <Image
-          src={post.imageUrl}
-          alt={post.title}
-          layout="fill"
-          objectFit="cover"
-          priority
-          className="opacity-60"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-        <div className="container max-w-7xl h-full relative">
-          <div className="absolute inset-x-4 bottom-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-            <div className="flex-1">
-              <Button
-                variant="ghost"
-                asChild
-                className="mb-6 text-white hover:text-white"
-              >
-                <Link href="/blog">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Blog
-                </Link>
-              </Button>
-              <Badge className="bg-white/20 text-white backdrop-blur-sm mb-4">
-                {post.category}
-              </Badge>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white max-w-4xl mb-6">
-                {post.title}
-              </h1>
+    <PageTransition>
+      <div className="min-h-screen bg-gray-50">
+        <ProgressBar />
+        {/* Enhanced Hero Section */}
+        <div className="w-full h-[80vh] relative bg-black">
+          <Image
+            src={post.imageUrl}
+            alt={post.title}
+            layout="fill"
+            objectFit="cover"
+            priority
+            className="opacity-60"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+          <div className="container max-w-7xl h-full relative">
+            <div className="absolute inset-x-4 bottom-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+              <div className="flex-1">
+                <Button
+                  variant="ghost"
+                  asChild
+                  className="mb-6 text-white hover:text-white"
+                >
+                  <Link href="/blog">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Blog
+                  </Link>
+                </Button>
+                <Badge className="bg-white/20 text-white backdrop-blur-sm mb-4">
+                  {post.category}
+                </Badge>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white max-w-4xl mb-6">
+                  {post.title}
+                </h1>
 
-              {/* Metadata section moved to hero */}
-              <div className="flex flex-wrap items-center gap-6 text-white/80">
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  <span>{post.author}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  <span>{formatDate(post.createdAt)}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span>{post.readTime} min read</span>
+                {/* Metadata section moved to hero */}
+                <div className="flex flex-wrap items-center gap-6 text-white/80">
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span>{post.author}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <span>{formatDate(post.createdAt)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    <span>{post.readTime} min read</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Action buttons moved to hero */}
-            <div className="flex items-center gap-4">
-              <ShareButton
-                shareCount={shareCount}
-                onShare={handleShare}
-                variant="ghost"
-                className="text-white hover:bg-white/10"
-              />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleListen}
-                className="gap-2 rounded-full text-white hover:bg-white"
-              >
-                {isPlaying ? (
-                  <VolumeX className="h-4 w-4" />
-                ) : (
-                  <Volume2 className="h-4 w-4" />
-                )}
-                {isPlaying ? "Stop" : "Listen"}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container max-w-2/3 px-4 relative z-10 ">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Content */}
-          <article className="flex-1">
-            <Card className="overflow-hidden">
-              <CardContent className="p-8">
-                {/* Content */}
-                <div className="prose prose-gray max-w-none">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={MarkdownComponents}
+              {/* Action buttons moved to hero */}
+              <div className="flex items-center gap-4">
+                <ShareButton
+                  shareCount={shareCount}
+                  onShare={handleShare}
+                  variant="ghost"
+                  className="text-white hover:bg-white/10"
+                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleListen}
+                  className="gap-2 rounded-full text-white hover:bg-white"
+                >
+                  {isPlaying ? (
+                    <VolumeX className="h-4 w-4" />
+                  ) : (
+                    <Volume2 className="h-4 w-4" />
+                  )}
+                  {isPlaying ? "Stop" : "Listen"}
+                </Button>
+                {user && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleEditToggle}
+                    className="gap-2 rounded-full text-white hover:bg-white"
                   >
-                    {markdownContent || post.content || "No content available."}
-                  </ReactMarkdown>
-                </div>
-              </CardContent>
-            </Card>
-          </article>
-
-          {/* Table of Contents Sidebar */}
-          <TableOfContents content={markdownContent || post.content || ""} />
-        </div>
-
-        {/* Related Posts */}
-        {relatedPosts.length > 0 && (
-          <div className="mt-16 mb-12">
-            <h2 className="text-2xl font-bold mb-8">Related Articles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedPosts.map((relatedPost) => (
-                <Card key={relatedPost.id} className="overflow-hidden group">
-                  <Link href={`/blog/${relatedPost.slug}`}>
-                    <div className="relative h-48 overflow-hidden">
-                      <Image
-                        src={relatedPost.imageUrl}
-                        alt={relatedPost.title}
-                        layout="fill"
-                        objectFit="cover"
-                        className="transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <Badge variant="secondary" className="mb-3">
-                        {relatedPost.category}
-                      </Badge>
-                      <h3 className="font-bold text-xl mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                        {relatedPost.title}
-                      </h3>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          {formatDate(relatedPost.createdAt)}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          {relatedPost.readTime} min read
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Link>
-                </Card>
-              ))}
+                    <Edit className="h-4 w-4" />
+                    {isEditing ? "Cancel" : "Edit"}
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
-        )}
+        </div>
+
+        <div className="container max-w-2/3 px-4 relative z-10 ">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Main Content */}
+            <article className="flex-1">
+              <Card className="overflow-hidden">
+                <CardContent className="p-8">
+                  {/* Content */}
+
+                  {isEditing ? (
+                    <div className="mb-4">
+                      <textarea
+                        value={editedContent}
+                        onChange={handleContentChange}
+                        className="w-full h-96 border rounded p-2 focus:outline-none focus:border-primary resize-y"
+                      />
+                      <div className="flex justify-end gap-2 mt-2">
+                        <Button
+                          variant="ghost"
+                          onClick={handleCancelEdit}
+                          disabled={updateLoading}
+                        >
+                          <X className="h-4 w-4 mr-2" />
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="primary"
+                          onClick={handleSave}
+                          disabled={updateLoading}
+                        >
+                          <Save className="h-4 w-4 mr-2" />
+                          {updateLoading ? "Saving..." : "Save"}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="prose prose-gray max-w-none">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={MarkdownComponents}
+                      >
+                        {markdownContent ||
+                          post.content ||
+                          "No content available."}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </article>
+
+            {/* Table of Contents Sidebar */}
+            <TableOfContents content={markdownContent || post.content || ""} />
+          </div>
+
+          {/* Related Posts */}
+          {relatedPosts.length > 0 && (
+            <div className="mt-16 mb-12">
+              <h2 className="text-2xl font-bold mb-8">Related Articles</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedPosts.map((relatedPost) => (
+                  <Card key={relatedPost.id} className="overflow-hidden group">
+                    <Link href={`/blog/${relatedPost.slug}`}>
+                      <div className="relative h-48 overflow-hidden">
+                        <Image
+                          src={relatedPost.imageUrl}
+                          alt={relatedPost.title}
+                          layout="fill"
+                          objectFit="cover"
+                          className="transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <CardContent className="p-6">
+                        <Badge variant="secondary" className="mb-3">
+                          {relatedPost.category}
+                        </Badge>
+                        <h3 className="font-bold text-xl mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                          {relatedPost.title}
+                        </h3>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            {formatDate(relatedPost.createdAt)}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            {relatedPost.readTime} min read
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Link>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

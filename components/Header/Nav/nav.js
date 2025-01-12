@@ -49,7 +49,8 @@ export default function Nav() {
     ...baseLinks.slice(0, 2),
     {
       title: "Resume",
-      href: loading ? "/" : resumeLink,
+      href: error ? "/" : resumeLink,
+      disabled: loading || !resumeLink,
     },
     ...baseLinks.slice(2),
   ];
@@ -58,16 +59,20 @@ export default function Nav() {
     <div className={styles.nav}>
       <div className={styles.body}>
         {links.map((link, i) => {
-          const { title, href } = link;
+          const { title, href, disabled } = link;
           return (
             <div key={`b_${i}`} className={styles.linkContainer}>
-              <Link href={href}>
+              <Link
+                href={href}
+                style={{ pointerEvents: disabled ? "none" : "" }}
+              >
                 <motion.div
                   custom={i}
                   variants={perspective}
                   initial="initial"
                   animate="enter"
                   exit="exit"
+                  style={{ opacity: disabled ? 0.5 : 1 }}
                 >
                   {title}
                 </motion.div>

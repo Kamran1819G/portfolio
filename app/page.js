@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import ContactSection from "@/components/ContactSection";
@@ -13,8 +12,10 @@ import { Phone, Instagram, Linkedin, Twitter } from "lucide-react";
 import SocialFeedSection from "@/components/SocialFeedSection";
 import Link from "next/link";
 import ProfessionalImage from "@/assets/images/young-professional-smiling-with-laptop.jpeg";
+import PageTransition from "@/components/page-transition/PageTransition";
 
 const TechnologiesSection = () => {
+  // Existing TechnologiesSection logic...
   const [technologies, setTechnologies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -125,154 +126,157 @@ const TechnologiesSection = () => {
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full">
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col md:flex-row items-center justify-between container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="w-full md:w-1/2 space-y-6">
-          <span className="inline-block px-4 py-2 bg-gray-100 rounded-full text-sm font-medium">
-            Introduction 👋
-          </span>
+    <PageTransition className="app">
+      <main className="min-h-screen w-full">
+        {/* Hero Section */}
+        <section className="min-h-screen flex flex-col md:flex-row items-center justify-between container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="w-full md:w-1/2 space-y-6">
+            <span className="inline-block px-4 py-2 bg-gray-100 rounded-full text-sm font-medium">
+              Introduction 👋
+            </span>
 
-          <h1 className="text-4xl md:text-6xl font-bold space-y-2">
-            <span className="block">Hello,</span>
-            <span className="block">I&apos;m Kamran Khan.</span>
-            <span className="block">a Software</span>
-            <span className="block">Engineer.</span>
-          </h1>
+            <h1 className="text-4xl md:text-6xl font-bold space-y-2">
+              <span className="block">Hello,</span>
+              <span className="block">I&apos;m Kamran Khan.</span>
+              <span className="block">a Software</span>
+              <span className="block">Engineer.</span>
+            </h1>
 
-          <a
-            href="#projects-section"
-            className="inline-flex items-center gap-6 mt-8 group"
-          >
-            <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center transition-transform group-hover:scale-105">
-              <Image
-                src={Scroll}
-                alt="scroll"
-                width={32}
-                height={32}
-                className="w-8 h-8"
-              />
+            <a
+              href="#projects-section"
+              className="inline-flex items-center gap-6 mt-8 group"
+            >
+              <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center transition-transform group-hover:scale-105">
+                <Image
+                  src={Scroll}
+                  alt="scroll"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8"
+                />
+              </div>
+              <span className="text-lg font-medium">Scroll down</span>
+            </a>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects-section" className="py-20">
+          <div className="container mx-auto px-4">
+            <span className="inline-block px-4 py-2 bg-gray-100 rounded-full text-sm font-medium mb-6">
+              Projects 👨🏻‍💻
+            </span>
+            <h2 className="text-4xl font-bold mb-12">
+              <span className="block">Some things</span>
+              <span className="block">I&apos;ve worked on.</span>
+            </h2>
+            <div className="mt-12">
+              <ProjectCarousel />
             </div>
-            <span className="text-lg font-medium">Scroll down</span>
-          </a>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects-section" className="py-20">
-        <div className="container mx-auto px-4">
-          <span className="inline-block px-4 py-2 bg-gray-100 rounded-full text-sm font-medium mb-6">
-            Projects 👨🏻‍💻
-          </span>
-          <h2 className="text-4xl font-bold mb-12">
-            <span className="block">Some things</span>
-            <span className="block">I&apos;ve worked on.</span>
-          </h2>
-          <div className="mt-12">
-            <ProjectCarousel />
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Contributions Section */}
-      <section id="contribution-section" className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <span className="inline-block px-4 py-2 bg-gray-100 rounded-full text-sm font-medium mb-6">
-            Open Source 👨🏻‍💻
-          </span>
-          <h2 className="text-4xl font-bold mb-12">
-            <span>My Contributions</span>
-          </h2>
-          <div className="mt-12">
-            <ContributionGraph />
+        {/* Contributions Section */}
+        <section id="contribution-section" className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <span className="inline-block px-4 py-2 bg-gray-100 rounded-full text-sm font-medium mb-6">
+              Open Source 👨🏻‍💻
+            </span>
+            <h2 className="text-4xl font-bold mb-12">
+              <span>My Contributions</span>
+            </h2>
+            <div className="mt-12">
+              <ContributionGraph />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Technologies Section */}
-      <TechnologiesSection />
+        {/* Technologies Section */}
+        <TechnologiesSection />
 
-      {/* Social Feed Section */}
-      <SocialFeedSection
-        twitterHandle="kamran1819g"
-        linkedinProfileUrl="https://linkedin.com/in/kamran1819g"
-      />
+        {/* Social Feed Section */}
+        <SocialFeedSection
+          twitterHandle="kamran1819g"
+          linkedinProfileUrl="https://linkedin.com/in/kamran1819g"
+        />
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="bg-white rounded-2xl overflow-hidden shadow-xl">
-            <div className="flex flex-col md:flex-row">
-              <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center space-y-6">
-                <h2 className="text-3xl font-bold tracking-tight">
-                  Want a custom software tailored to your needs? Let&apos;s talk
-                </h2>
-                <p className="text-gray-600 text-lg">
-                  I have helped hundreds of clients with their software needs.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link
-                    href={"/contact"}
-                    className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300"
-                  >
-                    Connect
-                  </Link>
-                  <div className="flex items-center gap-4 px-6 py-3 rounded-full border border-gray-300">
-                    <div className="flex gap-4 text-gray-500">
-                      <Link href="tel:+918097905879">
-                        <Phone
-                          size={20}
-                          className="hover:text-gray-700 cursor-pointer transition-colors"
-                        />
-                      </Link>
-                      <Link
-                        href="https://instagram.com/kamran1819g"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Instagram
-                          size={20}
-                          className="hover:text-gray-700 cursor-pointer transition-colors"
-                        />
-                      </Link>
-                      <Link
-                        href="https://linkedin.com/in/kamran1819g"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Linkedin
-                          size={20}
-                          className="hover:text-gray-700 cursor-pointer transition-colors"
-                        />
-                      </Link>
-                      <Link
-                        href="https://twitter.com/kamran1819g"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Twitter
-                          size={20}
-                          className="hover:text-gray-700 cursor-pointer transition-colors"
-                        />
-                      </Link>
+        {/* CTA Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="bg-white rounded-2xl overflow-hidden shadow-xl">
+              <div className="flex flex-col md:flex-row">
+                <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center space-y-6">
+                  <h2 className="text-3xl font-bold tracking-tight">
+                    Want a custom software tailored to your needs? Let&apos;s
+                    talk
+                  </h2>
+                  <p className="text-gray-600 text-lg">
+                    I have helped hundreds of clients with their software needs.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link
+                      href={"/contact"}
+                      className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300"
+                    >
+                      Connect
+                    </Link>
+                    <div className="flex items-center gap-4 px-6 py-3 rounded-full border border-gray-300">
+                      <div className="flex gap-4 text-gray-500">
+                        <Link href="tel:+918097905879">
+                          <Phone
+                            size={20}
+                            className="hover:text-gray-700 cursor-pointer transition-colors"
+                          />
+                        </Link>
+                        <Link
+                          href="https://instagram.com/kamran1819g"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Instagram
+                            size={20}
+                            className="hover:text-gray-700 cursor-pointer transition-colors"
+                          />
+                        </Link>
+                        <Link
+                          href="https://linkedin.com/in/kamran1819g"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Linkedin
+                            size={20}
+                            className="hover:text-gray-700 cursor-pointer transition-colors"
+                          />
+                        </Link>
+                        <Link
+                          href="https://twitter.com/kamran1819g"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Twitter
+                            size={20}
+                            className="hover:text-gray-700 cursor-pointer transition-colors"
+                          />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="md:w-1/2">
-                <Image
-                  src={ProfessionalImage}
-                  alt="Professional Image"
-                  layout="responsive"
-                  width={600}
-                  height={400}
-                  className="w-full h-full object-cover"
-                />
+                <div className="md:w-1/2">
+                  <Image
+                    src={ProfessionalImage}
+                    alt="Professional Image"
+                    layout="responsive"
+                    width={600}
+                    height={400}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </PageTransition>
   );
 }
